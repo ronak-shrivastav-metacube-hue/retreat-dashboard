@@ -1,0 +1,9 @@
+  /* ===== TOAST ===== */
+  #toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--lagoon-deep); color:#fff; padding:13px 22px; border-radius:10px; font-size:.86rem; font-weight:500;
+    opacity:0; pointer-events:none; transition:.25s; z-index:100; box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    display:flex; align-items:center; gap:8px;
+  }
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  #toast .dot{width:8px; height:8px; border-radius:50%; background:var(--aqua);}

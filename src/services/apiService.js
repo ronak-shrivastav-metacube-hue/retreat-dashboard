@@ -2,34 +2,36 @@ import axios from "axios";
 import { storage } from "../utils/storage";
 
 // Get guest list
-export const getGuestDetailsList = async (params = null) => {
+export const getGuestDetailsList = async ({
+    slug,
+    page = 1,
+    perPage = 10,
+    search = "",
+    status = ""
+}) => {
 
     const BASE_URL = storage.get("BASE_URL");
     const TOKEN = storage.get("TOKEN");
 
-    try {
+    const response = await axios.get(
+        `${BASE_URL}/event/new/guest-list/${slug}`,
+        {
+            params: {
+                page,
+                per_page: perPage,
+                search,
+                status
+            },
 
-        let url = `${BASE_URL}/event/guest-list`;
-
-        if (params) {
-            url += `/${params}`;
-        }
-
-        const response = await axios.get(url, {
             headers: {
                 Authorization: TOKEN
             }
-        });
+        }
+    );
 
-        return response.data;
-
-    } catch (error) {
-
-        throw error;
-
-    }
-
+    return response.data;
 };
+
 
 // Quick check-in
 export const quickCheckIn = async (guest) => {

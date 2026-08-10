@@ -760,3 +760,663 @@ tfoot td {
     border: none;
   }
 }
+
+/* ===== TABLE PAGINATION ===== */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 16px;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f6fcfe 100%
+  );
+  border-top: 1px solid var(--line);
+}
+
+.pagination-info {
+  color: var(--ink-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pagination-info strong {
+  color: var(--lagoon-deep);
+  font-weight: 700;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* All pagination buttons */
+.pagination-btn {
+  min-width: 34px;
+  height: 34px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--line);
+  border-radius: 8px;
+
+  background: var(--card);
+  color: var(--lagoon-deep);
+
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease,
+    box-shadow .15s ease,
+    transform .15s ease;
+}
+
+/* Hover */
+.pagination-btn:hover:not(:disabled):not(.active) {
+  background: var(--aqua-soft);
+  border-color: var(--aqua);
+  color: var(--lagoon-deep);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 3px 8px rgba(0, 119, 182, 0.10);
+}
+
+/* Active page */
+.pagination-btn.active {
+  background: linear-gradient(
+    135deg,
+    var(--lagoon) 0%,
+    var(--pool) 100%
+  );
+
+  color: #fff;
+
+  border-color: var(--lagoon);
+
+  box-shadow:
+    0 4px 10px rgba(0, 119, 182, 0.22);
+}
+
+/* Active hover */
+.pagination-btn.active:hover {
+  background: linear-gradient(
+    135deg,
+    var(--lagoon-deep) 0%,
+    var(--lagoon) 100%
+  );
+
+  transform: translateY(-1px);
+}
+
+/* Previous / Next */
+.pagination-btn:first-child,
+.pagination-btn:last-child {
+  padding: 0 13px;
+  min-width: auto;
+
+  background: var(--lagoon-deep);
+  color: #fff;
+  border-color: var(--lagoon-deep);
+}
+
+/* Previous / Next hover */
+.pagination-btn:first-child:hover:not(:disabled),
+.pagination-btn:last-child:hover:not(:disabled) {
+  background: var(--lagoon);
+  border-color: var(--lagoon);
+
+  box-shadow:
+    0 4px 10px rgba(0, 119, 182, 0.20);
+}
+
+/* Disabled Previous / Next */
+.pagination-btn:disabled {
+  background: #f1f7fa;
+  color: #9ab4c2;
+  border-color: var(--line);
+
+  cursor: not-allowed;
+  opacity: .65;
+
+  box-shadow: none;
+}
+
+/* Focus accessibility */
+.pagination-btn:focus-visible {
+  outline: 3px solid rgba(72, 202, 228, .35);
+  outline-offset: 2px;
+}
+
+/* Ellipsis if you add it later */
+.pagination-ellipsis {
+  min-width: 28px;
+  text-align: center;
+
+  color: var(--ink-soft);
+
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .8rem;
+}
+
+/* ===== MOBILE PAGINATION ===== */
+
+@media (max-width: 720px) {
+
+  .pagination {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .pagination-info {
+    text-align: center;
+  }
+
+  .pagination-controls {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .pagination-btn {
+    min-width: 36px;
+    height: 36px;
+  }
+
+  .pagination-btn:first-child,
+  .pagination-btn:last-child {
+    padding: 0 12px;
+  }
+}
+
+.button-loader {
+    width: 13px;
+    height: 13px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    animation: button-spin 0.7s linear infinite;
+}
+
+@keyframes button-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.checkin-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.checkin-text {
+    padding-left: 3px;
+    position: relative;
+    top: -2px;
+}
+
+/* ===== WALK-IN SEARCH ===== */
+
+.guest-search-results {
+    margin-top: 6px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--card);
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: 0 6px 18px rgba(4, 56, 98, 0.12);
+}
+
+.guest-search-item {
+    width: 100%;
+    display: block;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.guest-search-item:last-child {
+    border-bottom: none;
+}
+
+.guest-search-item:hover {
+    background: var(--aqua-soft);
+}
+
+.guest-search-name {
+    color: var(--ink);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.guest-search-email {
+    margin-top: 3px;
+    color: var(--lagoon);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+}
+
+.search-loading {
+    padding: 10px 4px;
+    color: var(--ink-soft);
+    font-size: .78rem;
+}
+
+/* =========================================
+   WALK-IN GUEST SEARCH
+========================================= */
+
+.walkin-modal {
+  max-width: 500px;
+}
+
+
+/* Search wrapper */
+
+.walkin-search {
+  position: relative;
+}
+
+
+/* Search input */
+
+.walkin-search input {
+  padding-right: 40px;
+}
+
+
+/* Search loading spinner */
+
+.search-spinner {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  margin-top: -8px;
+
+  border: 2px solid var(--aqua-soft);
+  border-top-color: var(--lagoon);
+
+  border-radius: 50%;
+
+  animation: search-spin .7s linear infinite;
+}
+
+
+@keyframes search-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   SEARCH RESULT BOX
+========================================= */
+
+.guest-search-results {
+  margin-top: 8px;
+
+  background: var(--card);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  max-height: 280px;
+
+  overflow-y: auto;
+
+  box-shadow:
+    0 10px 25px rgba(4, 56, 98, 0.12);
+}
+
+
+/* =========================================
+   SEARCH RESULT ITEM
+========================================= */
+
+.guest-search-item {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  position: relative;
+
+  padding: 11px 12px;
+
+  border: none;
+
+  border-bottom: 1px solid var(--line);
+
+  background: var(--card);
+
+  color: var(--ink);
+
+  text-align: left;
+
+  cursor: pointer;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  transition:
+    background .15s ease,
+    padding-left .15s ease;
+}
+
+
+.guest-search-item:last-child {
+  border-bottom: none;
+}
+
+
+.guest-search-item:hover {
+  background: #f4fbfd;
+
+  padding-left: 15px;
+}
+
+
+/* Small aqua line on hover */
+
+.guest-search-item::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 3px;
+
+  background: transparent;
+
+  transition: background .15s ease;
+}
+
+
+.guest-search-item:hover::before {
+  background: var(--aqua);
+}
+
+
+/* =========================================
+   CIRCULAR USER IMAGE
+========================================= */
+
+.guest-avatar {
+  width: 42px;
+  height: 42px;
+
+  min-width: 42px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--aqua-soft),
+      #e7f7fb
+    );
+
+  border: 2px solid var(--aqua-soft);
+
+  color: var(--lagoon-deep);
+
+  font-family: 'Fraunces', serif;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 2px 5px rgba(4, 56, 98, .08);
+
+  flex-shrink: 0;
+}
+
+
+.guest-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/* =========================================
+   USER CONTENT
+========================================= */
+
+.guest-search-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.guest-search-name {
+  font-size: .86rem;
+
+  font-weight: 700;
+
+  color: var(--ink);
+
+  line-height: 1.2;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.guest-search-email {
+  margin-top: 3px;
+
+  font-family: 'JetBrains Mono', monospace;
+
+  font-size: .68rem;
+
+  color: var(--ink-soft);
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   EMPLOYEE ID / REMOTE
+========================================= */
+
+.guest-search-meta {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 5px;
+
+  font-family: 'JetBrains Mono', monospace;
+
+  font-size: .62rem;
+
+  color: var(--ink-soft);
+}
+
+
+.guest-search-meta > span:first-child {
+  background: var(--sand);
+
+  border: 1px solid var(--line);
+
+  padding: 2px 6px;
+
+  border-radius: 4px;
+}
+
+
+.remote-badge {
+  background: var(--coral-soft);
+
+  color: #c14b32;
+
+  padding: 2px 6px;
+
+  border-radius: 4px;
+
+  font-family: 'Space Grotesk', sans-serif;
+
+  font-size: .6rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .03em;
+}
+
+
+/* =========================================
+   RIGHT ARROW
+========================================= */
+
+.guest-search-arrow {
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: var(--sand);
+
+  color: var(--lagoon);
+
+  font-size: .9rem;
+
+  font-weight: 700;
+
+  flex-shrink: 0;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    transform .15s ease;
+}
+
+
+.guest-search-item:hover .guest-search-arrow {
+  background: var(--aqua);
+
+  color: var(--deep-navy);
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================
+   NO RESULTS
+========================================= */
+
+.guest-no-results {
+  margin-top: 8px;
+
+  padding: 12px;
+
+  text-align: center;
+
+  border: 1px dashed var(--line);
+
+  border-radius: 8px;
+
+  background: rgba(214, 243, 250, .35);
+
+  color: var(--ink-soft);
+
+  font-size: .76rem;
+}
+
+
+/* =========================================
+   CHECK-IN BUTTON LOADING
+========================================= */
+
+.button-loader {
+  width: 13px;
+  height: 13px;
+
+  border: 2px solid rgba(255, 255, 255, .35);
+
+  border-top-color: #fff;
+
+  border-radius: 50%;
+
+  display: inline-block;
+
+  animation: button-spin .7s linear infinite;
+}
+
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.btn:disabled {
+  opacity: .55;
+
+  cursor: not-allowed;
+}

@@ -1,110 +1,282 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import Header from './Header/Header'
-import Dashboard from './Dashboard/Dashboard'
-import GuestList from './GuestList/GuestList'
-import { generateEmployees } from './data/employees'
-import WalkinModal from './WalkinModal/WalkinModal'
-import Toast from './Toast/Toast'
-// import './App.css'
+import { useEffect, useState } from "react";
+
+import { storage } from "./utils/storage";
+import {
+  getGuestDetailsList,
+  quickCheckIn,
+  addGuest
+} from "./services/apiService";
+
+import Header from "./Header/Header";
+import Dashboard from "./Dashboard/Dashboard";
+import GuestList from "./GuestList/GuestList";
+import WalkinModal from "./WalkinModal/WalkinModal";
+import Toast from "./Toast/Toast";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [employees, setEmployees] = useState(generateEmployees());
+
+  const [employees, setEmployees] = useState([]);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showWalkinModal, setShowWalkinModal] = useState(false);
   const [toast, setToast] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [checkingInId, setCheckingInId] = useState(null);
 
-  function handleWalkin(guest) {
+  // -----------------------------------------
+  // API CONFIGURATION
+  // -----------------------------------------
 
-    const now = new Date();
+  const EVENT_SLUG = "annual_outing_2026";
 
-    const time = now.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+  useEffect(() => {
 
-
-    const employee = {
-
-      id: Date.now(),
-
-      name: guest.name,
-
-      email: guest.email,
-
-      dept: guest.department,
-
-      invited_on: null,
-
-      checkin_time:
-        `${new Date().toISOString().slice(0, 10)} ${time}`,
-
-      isWalkin: true
-
-    };
-
-    setEmployees(current => [
-
-      ...current,
-
-      employee
-
-    ]);
-
-
-    setShowWalkinModal(false);
-
-
-    setToast(
-      `${guest.name} checked in successfully`
+    storage.set(
+      "BASE_URL",
+      "http://localhost:8000/api"
     );
 
-
-    setTimeout(() => {
-
-      setToast("");
-
-    }, 3000);
-
-  }
-
-  function handleCheckin(id) {
-    setEmployees(current =>
-
-      current.map(employee => {
-
-        if (employee.id === id) {
-
-          return {
-            ...employee,
-            checkin_time:
-              `${new Date().toISOString().slice(0, 10)}
-                     ${new Date().toLocaleTimeString()}`
-          };
-
-        }
-        return employee;
-      })
-
+    storage.set(
+      "TOKEN",
+      "Bearer 106835|P9gAZwgPNtTsRpEya19X6n8l7tDSw7wTzthUubu9ff973c46"
     );
 
-    setToast("Guest checked in successfully");
+    storage.set(
+      "EVENT_SLUG",
+      EVENT_SLUG
+    );
+
+  }, []);
+
+
+  // -----------------------------------------
+  // GET GUEST LIST
+  // -----------------------------------------
+
+  const getGuestList = async () => {
+
+    setLoading(true);
+
+    try {
+
+      const response = await getGuestDetailsList(
+        EVENT_SLUG
+      );
+
+      if (response.success) {
+
+        const guests = (response.data || []).map((guest) => ({
+
+          id: guest.id,
+
+          user_id: guest.user_id,
+
+          name: [
+            guest.user?.first_name,
+            guest.user?.last_name
+          ]
+            .filter(Boolean)
+            .join(" "),
+
+          email: guest.user?.email || "",
+
+          checkin_time: guest.check_in_time,
+
+          isWalkin: false,
+
+          event_id: guest.event_id,
+
+          rsvp_spouse: guest.rsvp_spouse,
+
+          rsvp_kids_count: guest.rsvp_kids_count,
+
+          check_in_spouse: guest.check_in_spouse,
+
+          check_in_kids_count: guest.check_in_kids_count
+
+        }));
+
+        setEmployees(guests);
+
+      } else {
+
+        showToast(
+          response.message || "Unable to load guests"
+        );
+
+      }
+
+    } catch (error) {
+
+      if (error.response?.status !== 401) {
+
+        showToast(
+          error.response?.data?.message ||
+          "Something went wrong"
+        );
+
+      }
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  // Load guest list
+  useEffect(() => {
+    getGuestList();
+  }, []);
+
+
+  // -----------------------------------------
+  // TOAST HELPER
+  // -----------------------------------------
+
+  const showToast = (message) => {
+
+    setToast(message);
 
     setTimeout(() => {
-
       setToast("");
-
     }, 3000);
 
-  }
+  };
+
+
+  // -----------------------------------------
+  // REGISTER WALK-IN GUEST
+  // -----------------------------------------
+
+  const handleWalkin = async (selectedUser) => {
+
+    if (!selectedUser) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+
+      const payload = {
+
+        event_slug: EVENT_SLUG,
+
+        user_id: selectedUser.id
+
+      };
+
+      console.log("Walk-in payload:", payload);
+
+      const response = await addGuest(payload);
+
+      if (response.success) {
+
+        showToast(
+          `Guest ${selectedUser.email} checked in successfully`
+        );
+
+        // Close modal
+        setShowWalkinModal(false);
+
+        // Refresh guest list
+        await getGuestList();
+
+      } else {
+
+        showToast(
+          response.message ||
+          "Unable to check in guest"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Walk-in registration error:",
+        error
+      );
+
+      showToast(
+        error.response?.data?.message ||
+        "Something went wrong while checking in guest"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  // -----------------------------------------
+  // QUICK CHECK-IN
+  // -----------------------------------------
+
+  const handleCheckin = async (employee) => {
+
+    setCheckingInId(employee.id);
+
+    try {
+
+      const response = await quickCheckIn(employee);
+
+      if (response.success) {
+
+        showToast(
+          response.message ||
+          "Guest checked in successfully"
+        );
+
+        await getGuestList();
+
+      } else {
+
+        showToast(
+          response.message ||
+          "Unable to check in guest"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Quick check-in error:",
+        error
+      );
+
+      showToast(
+        error.response?.data?.message ||
+        "Something went wrong while checking in guest"
+      );
+
+    } finally {
+
+      setCheckingInId(null);
+
+    }
+
+  };
+
+
+  // -----------------------------------------
+  // RENDER
+  // -----------------------------------------
 
   return (
     <>
-      <Header activeTab={activeTab}
-        setActiveTab={setActiveTab} />
+
+      <Header
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+
 
       <main>
 
@@ -117,28 +289,62 @@ function App() {
         ) : (
 
           <GuestList
+
             employees={employees}
-            openWalkinModal={() => setShowWalkinModal(true)}
+
+            openWalkinModal={() =>
+              setShowWalkinModal(true)
+            }
+
             onCheckin={handleCheckin}
+
+            checkingInId={checkingInId}
+
           />
 
         )}
 
       </main>
 
+
       <WalkinModal
+
         open={showWalkinModal}
-        onClose={() => setShowWalkinModal(false)}
+
+        onClose={() =>
+          setShowWalkinModal(false)
+        }
+
         onSave={handleWalkin}
+
+        eventSlug={EVENT_SLUG}
+
+        loading={loading}
+
       />
+
 
       <Toast
+
         message={toast}
-        onClose={() => setToast("")}
+
+        onClose={() =>
+          setToast("")
+        }
+
       />
 
+
+      {loading && (
+
+        <div className="loading-overlay">
+          Loading...
+        </div>
+
+      )}
+
     </>
-  )
+  );
 }
 
-export default App
+export default App;

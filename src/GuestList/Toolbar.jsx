@@ -5,8 +5,6 @@ import { printList } from "../utils/printGuests";
 export default function Toolbar({
     search,
     setSearch,
-    department,
-    setDepartment,
     status,
     setStatus,
     departments,
@@ -25,26 +23,6 @@ export default function Toolbar({
             />
 
             <select
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-            >
-
-                <option value="">All Departments</option>
-
-                {departments.map((dept) => (
-
-                    <option
-                        key={dept}
-                        value={dept}
-                    >
-                        {dept}
-                    </option>
-
-                ))}
-
-            </select>
-
-            <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
             >
@@ -52,8 +30,6 @@ export default function Toolbar({
                 <option value="">All Statuses</option>
                 <option value="checked">Checked In</option>
                 <option value="pending">Pending</option>
-                <option value="walkin">Walk-in</option>
-
             </select>
 
             <div className="spacer"></div>

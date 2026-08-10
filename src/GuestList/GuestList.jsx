@@ -9,7 +9,8 @@ export default function GuestList({
     employees,
 
     openWalkinModal,
-    onCheckin
+    onCheckin,
+    checkingInId
 
 }) {
 
@@ -19,15 +20,6 @@ export default function GuestList({
 
     const [status, setStatus] = useState("");
 
-    const departments = [
-
-        ...new Set(
-
-            employees.map(emp => emp.dept)
-
-        )
-
-    ].sort();
 
     const filteredEmployees = useMemo(() => {
 
@@ -41,12 +33,7 @@ export default function GuestList({
 
                 emp.email.toLowerCase().includes(search.toLowerCase());
 
-            const matchesDepartment =
-
-                !department ||
-
-                emp.dept === department;
-
+    
             const empStatus =
 
                 emp.isWalkin
@@ -69,8 +56,6 @@ export default function GuestList({
 
                 matchesSearch &&
 
-                matchesDepartment &&
-
                 matchesStatus
 
             );
@@ -82,8 +67,6 @@ export default function GuestList({
         employees,
 
         search,
-
-        department,
 
         status
 
@@ -111,15 +94,9 @@ export default function GuestList({
 
                 setSearch={setSearch}
 
-                department={department}
-
-                setDepartment={setDepartment}
-
                 status={status}
 
                 setStatus={setStatus}
-
-                departments={departments}
 
                 openWalkinModal={openWalkinModal}
 
@@ -136,6 +113,7 @@ export default function GuestList({
 
                 employees={filteredEmployees}
                 onCheckin={onCheckin}
+                checkingInId={checkingInId}
 
             />
 

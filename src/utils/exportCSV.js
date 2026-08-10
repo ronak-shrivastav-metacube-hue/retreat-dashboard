@@ -2,7 +2,6 @@ export function exportCSV(filteredEmployees) {
     const headers = [
         "Name",
         "Email",
-        "Department",
         "Status",
         "Check In Time"
     ];
@@ -10,7 +9,6 @@ export function exportCSV(filteredEmployees) {
     const rows = filteredEmployees.map(emp => [
         emp.name,
         emp.email,
-        emp.dept,
         emp.isWalkin
             ? "Walk-in"
             : emp.checkin_time

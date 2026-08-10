@@ -117,41 +117,6 @@ export default function Dashboard({ employees }) {
                     />
                 </div>
             </div>
-
-            <div className="section-label">
-
-                Check-ins by department
-
-            </div>
-
-            <div className="dept-grid">
-                {
-                    Object.entries(departmentData)
-                        .map(
-                            ([department, data]) => (
-
-                                <DepartmentCard
-
-                                    key={department}
-
-                                    department={department}
-
-                                    checked={data.checked}
-
-                                    total={data.total}
-
-                                />
-
-                            )
-
-                        )
-
-                }
-
-
-            </div>
-
-
         </section>
 
     )

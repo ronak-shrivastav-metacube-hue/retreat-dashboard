@@ -40,7 +40,6 @@ export function printList(filteredEmployees) {
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Department</th>
                     <th>Status</th>
                     <th>Check In</th>
                 </tr>
@@ -53,7 +52,6 @@ export function printList(filteredEmployees) {
             <tr>
                 <td>${emp.name}</td>
                 <td>${emp.email}</td>
-                <td>${emp.dept}</td>
                 <td>${emp.isWalkin
             ? "Walk-in"
             : emp.checkin_time

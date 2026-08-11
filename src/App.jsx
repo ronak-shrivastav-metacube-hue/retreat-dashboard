@@ -16,7 +16,7 @@ import Toast from "./Toast/Toast";
 function App() {
 
   const [employees, setEmployees] = useState([]);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("guests");
   const [showWalkinModal, setShowWalkinModal] = useState(false);
   const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(false);
@@ -158,9 +158,6 @@ function App() {
 
     }
   };
-
-
-
 
   // Load guest list
   useEffect(() => {
@@ -340,8 +337,6 @@ function App() {
     }
 
   };
-
-
   // -----------------------------------------
   // RENDER
   // -----------------------------------------

@@ -18,7 +18,8 @@ export default function GuestList({
     tableLoading,
     checkingInId,
     onPageChange,
-    onSearch
+    onSearch,
+    onOpenScanner
 }) {
 
     return (
@@ -53,6 +54,8 @@ export default function GuestList({
                 onSearch={onSearch}
 
                 loading={loading}
+
+                onOpenScanner={onOpenScanner}
 
             />
 

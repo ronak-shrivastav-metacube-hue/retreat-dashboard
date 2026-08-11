@@ -1,0 +1,117 @@
+.qr-scanner-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999;
+
+    padding: 20px;
+}
+
+
+.qr-scanner-modal {
+    width: 100%;
+    max-width: 500px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+
+.qr-scanner-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 20px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.qr-scanner-header h3 {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.qr-close-button {
+    border: none;
+
+    background: transparent;
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    color: #555;
+}
+
+
+.qr-close-button:hover {
+    color: #000;
+}
+
+
+.qr-scanner-body {
+    padding: 20px;
+}
+
+
+.qr-reader {
+    width: 100%;
+}
+
+
+.qr-scanner-help {
+    margin: 15px 0 0;
+
+    text-align: center;
+
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+/* html5-qrcode */
+
+#qr-reader video {
+    width: 100% !important;
+
+    border-radius: 8px;
+}
+
+
+#qr-reader__scan_region {
+    min-height: 250px;
+}
+
+
+#qr-reader__dashboard {
+    margin-top: 10px;
+}
+
+
+#qr-reader__dashboard_section {
+    padding: 0 !important;
+}
+
+
+#qr-reader__dashboard_section_csr {
+    display: none;
+}

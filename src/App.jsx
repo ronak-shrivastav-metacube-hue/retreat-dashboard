@@ -4,7 +4,8 @@ import { storage } from "./utils/storage";
 import {
   getGuestDetailsList,
   quickCheckIn,
-  addGuest
+  addGuest,
+  checkInByQrCode
 } from "./services/apiService";
 
 import Header from "./Header/Header";
@@ -12,6 +13,7 @@ import Dashboard from "./Dashboard/Dashboard";
 import GuestList from "./GuestList/GuestList";
 import WalkinModal from "./WalkinModal/WalkinModal";
 import Toast from "./Toast/Toast";
+import QRScanner from "./QRScanner/QRScanner";
 
 function App() {
 
@@ -22,6 +24,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [checkingInId, setCheckingInId] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
+  const [showQRScanner, setShowQRScanner] = useState(false);
 
   const [pagination, setPagination] = useState({
     current_page: 1,
@@ -51,7 +54,7 @@ function App() {
 
     storage.set(
       "TOKEN",
-      "Bearer 106839|Wy5fofpPgld3cWk2p4BrWVkGp8NcnOvqnlteBvXJff73c22a"
+      "Bearer 106842|4cIjhYCYF8ETEYeWNWkzhdBzTxpBjITi4Gi3vQ3wd0f7ec27"
     );
 
     storage.set(
@@ -141,8 +144,6 @@ function App() {
 
     } catch (error) {
 
-      console.error("Guest list error:", error);
-
       if (error.response?.status !== 401) {
 
         showToast(
@@ -204,7 +205,6 @@ function App() {
 
   };
 
-
   // -----------------------------------------
   // TOAST HELPER
   // -----------------------------------------
@@ -242,15 +242,11 @@ function App() {
 
       };
 
-      console.log("Walk-in payload:", payload);
-
       const response = await addGuest(payload);
 
       if (response.success) {
 
-        showToast(
-          `Guest ${selectedUser.email} checked in successfully`
-        );
+        showToast(`Guest ${selectedUser.email} checked in successfully`);
 
         // Close modal
         setShowWalkinModal(false);
@@ -260,24 +256,13 @@ function App() {
 
       } else {
 
-        showToast(
-          response.message ||
-          "Unable to check in guest"
-        );
+        showToast(response.message || "Unable to check in guest");
 
       }
 
     } catch (error) {
 
-      console.error(
-        "Walk-in registration error:",
-        error
-      );
-
-      showToast(
-        error.response?.data?.message ||
-        "Something went wrong while checking in guest"
-      );
+      showToast(error.response?.data?.message || "Something went wrong while checking in guest");
 
     } finally {
 
@@ -286,7 +271,6 @@ function App() {
     }
 
   };
-
 
   // -----------------------------------------
   // QUICK CHECK-IN
@@ -302,29 +286,15 @@ function App() {
 
       if (response.success) {
 
-        showToast(
-          response.message ||
-          "Guest checked in successfully"
-        );
+        showToast(response.message || "Guest checked in successfully");
 
         await getGuestList();
 
       } else {
-
-        showToast(
-          response.message ||
-          "Unable to check in guest"
-        );
-
+        showToast(response.message || "Unable to check in guest");
       }
 
     } catch (error) {
-
-      console.error(
-        "Quick check-in error:",
-        error
-      );
-
       showToast(
         error.response?.data?.message ||
         "Something went wrong while checking in guest"
@@ -335,11 +305,30 @@ function App() {
       setCheckingInId(null);
 
     }
-
   };
   // -----------------------------------------
   // RENDER
   // -----------------------------------------
+
+
+  // SCANNING
+  const handleScanSuccess = async (scannedString) => {
+    try {
+
+      const response = await checkInByQrCode(scannedString);
+      if (response.success) {
+        showToast(response.message);
+        // Refresh guest list
+        await getGuestList();
+      } else {
+        showToast(response?.message || "Something went wrong while checking in guest");
+      }
+    } catch (error) {
+      showToast(error.response?.data?.message || "QR Check-in Error:");
+    } finally {
+      setShowQRScanner(false)
+    }
+  };
 
   return (
     <>
@@ -396,6 +385,7 @@ function App() {
             tableLoading={tableLoading}
 
             checkingInId={checkingInId}
+            onOpenScanner={() => setShowQRScanner(true)}
           />
         )}
 
@@ -426,6 +416,12 @@ function App() {
           setToast("")
         }
 
+      />
+
+      <QRScanner
+        open={showQRScanner}
+        onClose={() => setShowQRScanner(false)}
+        onScanSuccess={handleScanSuccess}
       />
 
       {loading && (

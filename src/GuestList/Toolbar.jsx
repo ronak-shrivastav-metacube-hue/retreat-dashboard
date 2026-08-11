@@ -1,5 +1,14 @@
 import { exportCSV } from "../utils/exportCSV";
 import { printList } from "../utils/printGuests";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faRotateRight,
+    faUserPlus,
+    faFileExport,
+    faPrint,
+    faQrcode,
+    faMagnifyingGlass
+} from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Toolbar({
@@ -11,18 +20,30 @@ export default function Toolbar({
     openWalkinModal,
     filteredEmployees,
     onRefresh,
-    loading
+    loading,
+    onOpenScanner,
+    onSearch
 }) {
     return (
 
         <div className="toolbar">
 
-            <input
-                type="text"
-                placeholder="Search name or email..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className="search-input-wrapper">
+                <input
+                    type="text"
+                    placeholder="Search name or email..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            onSearch();
+                        }
+                    }}
+                />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
+
+            </div>
+
 
             <select
                 value={status}
@@ -37,22 +58,26 @@ export default function Toolbar({
             <div className="spacer"></div>
 
             <button className="btn btn-ghost" onClick={onRefresh} disabled={loading}>
-                ↻ Refresh
+                <FontAwesomeIcon icon={faRotateRight} /> Refresh
             </button>
 
             <button
                 className="btn btn-ghost"
                 onClick={openWalkinModal}
             >
-                ＋ Add Walk-in Guest
+                <FontAwesomeIcon icon={faUserPlus} /> Add Walk-in Guest
             </button>
 
             <button className="btn btn-ghost" onClick={() => exportCSV(filteredEmployees)}>
-                ⬇ Export CSV
+                <FontAwesomeIcon icon={faFileExport} /> Export CSV
             </button>
 
             <button className="btn btn-ghost" onClick={() => printList(filteredEmployees)}>
-                🖨 Print
+                <FontAwesomeIcon icon={faPrint} /> Print
+            </button>
+
+            <button className="btn btn-ghost" onClick={onOpenScanner}>
+                <FontAwesomeIcon icon={faQrcode} /> Open QR Scanner
             </button>
 
         </div>

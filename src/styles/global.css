@@ -1470,3 +1470,21 @@ tfoot td {
 
   cursor: not-allowed;
 }
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper .search-icon {
+    position: absolute;
+    right: 10px;
+    color: #6b7280;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.search-input-wrapper input {
+    padding-left: 36px;
+}

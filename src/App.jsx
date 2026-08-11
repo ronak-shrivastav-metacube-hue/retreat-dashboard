@@ -26,7 +26,7 @@ function App() {
   // API CONFIGURATION
   // -----------------------------------------
 
-  const EVENT_SLUG = "annual_outing_2026";
+  const EVENT_SLUG = "annual-retreat-26";
 
   useEffect(() => {
 
@@ -37,7 +37,7 @@ function App() {
 
     storage.set(
       "TOKEN",
-      "Bearer 106835|P9gAZwgPNtTsRpEya19X6n8l7tDSw7wTzthUubu9ff973c46"
+      "Bearer 157485|GZqt2SJLs5bdylkklYHe3GamIujroac8fP3jIPux68639db5"
     );
 
     storage.set(

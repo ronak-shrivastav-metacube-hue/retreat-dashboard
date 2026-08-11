@@ -1,68 +1,55 @@
-import { storage } from "../utils/storage";
-import { useEffect, useState } from "react";
-
 export default function GuestTable({
     employees,
+    pagination,
+    currentPage,
+    onPageChange,
     onCheckin,
-    checkingInId
+    checkingInId,
+    tableLoading
 }) {
-    const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
-    const ITEMS_PER_PAGE = 10;
 
-    const [currentPage, setCurrentPage] = useState(1);
-
-    // Total number of pages
-    const totalPages = Math.ceil(employees.length / ITEMS_PER_PAGE);
-
-    // If employees change and current page no longer exists,
-    // move back to the last available page.
-    useEffect(() => {
-        if (currentPage > totalPages && totalPages > 0) {
-            setCurrentPage(totalPages);
-        }
-    }, [employees.length, currentPage, totalPages]);
-
-    // Get employees for current page
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-
-    const currentEmployees = employees.slice(startIndex, endIndex);
-
-    // Change page
     const goToPage = (page) => {
-        if (page >= 1 && page <= totalPages) {
-            setCurrentPage(page);
+
+        if (
+            !tableLoading &&
+            page >= 1 &&
+            page <= pagination.last_page
+        ) {
+            onPageChange(page);
         }
+
     };
 
     return (
 
         <div className="table-wrap">
 
+            {tableLoading && (
+                <div className="table-loading-overlay">
+                    <span className="table-spinner"></span>
+                    <span>Loading guests...</span>
+                </div>
+            )}
+
             <table>
 
                 <thead>
 
                     <tr>
-
                         <th>Name</th>
-
                         <th>Email</th>
-
                         <th>Status</th>
-
                         <th>Action</th>
-
                     </tr>
 
                 </thead>
 
+
                 <tbody>
 
-                    {currentEmployees.length > 0 ? (
+                    {employees.length > 0 ? (
 
-                        currentEmployees.map((employee) => {
+                        employees.map((employee) => {
 
                             const status = employee.isWalkin
                                 ? "Walk-in"
@@ -70,21 +57,28 @@ export default function GuestTable({
                                     ? "Checked In"
                                     : "Pending";
 
-                            // Format check-in date/time
-                            const checkinDate = employee.checkin_time
-                                ? new Date(employee.checkin_time)
-                                : null;
+                            const checkinDate =
+                                employee.checkin_time
+                                    ? new Date(employee.checkin_time)
+                                    : null;
 
-                            const formattedCheckin = checkinDate
-                                ? `${String(checkinDate.getDate()).padStart(2, "0")}-${String(
-                                    checkinDate.getMonth() + 1
-                                ).padStart(2, "0")}-${checkinDate.getFullYear()} ${checkinDate.toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    second: "2-digit",
-                                    hour12: true
-                                })}`
-                                : "—";
+                            const formattedCheckin =
+                                checkinDate
+                                    ? `${String(
+                                        checkinDate.getDate()
+                                    ).padStart(2, "0")}-${String(
+                                        checkinDate.getMonth() + 1
+                                    ).padStart(2, "0")}-${checkinDate.getFullYear()} ${checkinDate.toLocaleTimeString(
+                                        [],
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            second: "2-digit",
+                                            hour12: true
+                                        }
+                                    )}`
+                                    : "—";
+
 
                             return (
 
@@ -113,24 +107,40 @@ export default function GuestTable({
                                         ) : (
 
                                             <>
+
                                                 <button
                                                     className="checkin-btn"
-                                                    onClick={() => onCheckin(employee)}
-                                                    disabled={checkingInId === employee.id}
+                                                    onClick={() =>
+                                                        onCheckin(employee)
+                                                    }
+                                                    disabled={
+                                                        checkingInId ===
+                                                        employee.id
+                                                    }
                                                 >
+
                                                     {checkingInId === employee.id ? (
+
                                                         <>
                                                             <span className="button-loader"></span>
-                                                            <span className="checkin-text">Checking...</span>
+                                                            <span>
+                                                                Checking...
+                                                            </span>
                                                         </>
+
                                                     ) : (
+
                                                         "Quick Check in"
+
                                                     )}
+
                                                 </button>
+
 
                                                 <button className="remind-btn">
                                                     Remind
                                                 </button>
+
                                             </>
 
                                         )}
@@ -146,9 +156,11 @@ export default function GuestTable({
                     ) : (
 
                         <tr>
+
                             <td colSpan={4}>
                                 No guests found
                             </td>
+
                         </tr>
 
                     )}
@@ -157,35 +169,53 @@ export default function GuestTable({
 
             </table>
 
-            {/* Pagination */}
-            {totalPages > 0 && (
+
+            {/* SERVER-SIDE PAGINATION */}
+
+            {pagination.total > 0 && (
 
                 <div className="pagination">
 
                     <div className="pagination-info">
+
                         Showing{" "}
-                        <strong>{startIndex + 1}</strong>
-                        {" – "}
+
                         <strong>
-                            {Math.min(endIndex, employees.length)}
+                            {pagination.from}
                         </strong>
+
+                        {" – "}
+
+                        <strong>
+                            {pagination.to}
+                        </strong>
+
                         {" of "}
-                        <strong>{employees.length}</strong>
+
+                        <strong>
+                            {pagination.total}
+                        </strong>
+
                         {" guests"}
+
                     </div>
+
 
                     <div className="pagination-controls">
 
                         <button
                             className="pagination-btn"
                             onClick={() => goToPage(currentPage - 1)}
-                            disabled={currentPage === 1}
+                            disabled={currentPage === 1 || tableLoading}
                         >
                             ← Previous
                         </button>
 
+
                         {Array.from(
-                            { length: totalPages },
+                            {
+                                length: pagination.last_page
+                            },
                             (_, index) => index + 1
                         ).map((page) => (
 
@@ -194,16 +224,21 @@ export default function GuestTable({
                                 className={`pagination-btn ${currentPage === page ? "active" : ""
                                     }`}
                                 onClick={() => goToPage(page)}
+                                disabled={tableLoading}
                             >
                                 {page}
                             </button>
 
                         ))}
 
+
                         <button
                             className="pagination-btn"
                             onClick={() => goToPage(currentPage + 1)}
-                            disabled={currentPage === totalPages}
+                            disabled={
+                                currentPage === pagination.last_page ||
+                                tableLoading
+                            }
                         >
                             Next →
                         </button>

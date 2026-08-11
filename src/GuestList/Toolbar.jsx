@@ -10,6 +10,8 @@ export default function Toolbar({
     departments,
     openWalkinModal,
     filteredEmployees,
+    onRefresh,
+    loading
 }) {
     return (
 
@@ -33,6 +35,10 @@ export default function Toolbar({
             </select>
 
             <div className="spacer"></div>
+
+            <button className="btn btn-ghost" onClick={onRefresh} disabled={loading}>
+                ↻ Refresh
+            </button>
 
             <button
                 className="btn btn-ghost"

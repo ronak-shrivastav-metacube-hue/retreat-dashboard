@@ -16,11 +16,25 @@ import Toast from "./Toast/Toast";
 function App() {
 
   const [employees, setEmployees] = useState([]);
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("guests");
   const [showWalkinModal, setShowWalkinModal] = useState(false);
   const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingInId, setCheckingInId] = useState(null);
+  const [tableLoading, setTableLoading] = useState(false);
+
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    per_page: 10,
+    total: 0,
+    last_page: 1,
+    from: 0,
+    to: 0
+  });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
 
   // -----------------------------------------
   // API CONFIGURATION
@@ -51,21 +65,28 @@ function App() {
   // -----------------------------------------
   // GET GUEST LIST
   // -----------------------------------------
+  const getGuestList = async (
+    page = currentPage,
+    searchValue = search,
+    statusValue = status
+  ) => {
 
-  const getGuestList = async () => {
-
-    setLoading(true);
+    // Show table loader for pagination/filter/search/refresh
+    setTableLoading(true);
 
     try {
 
-      const response = await getGuestDetailsList(
-        EVENT_SLUG
-      );
+      const response = await getGuestDetailsList({
+        slug: EVENT_SLUG,
+        page: page,
+        perPage: 10,
+        search: searchValue,
+        status: statusValue
+      });
 
       if (response.success) {
 
         const guests = (response.data || []).map((guest) => ({
-
           id: guest.id,
 
           user_id: guest.user_id,
@@ -92,20 +113,35 @@ function App() {
           check_in_spouse: guest.check_in_spouse,
 
           check_in_kids_count: guest.check_in_kids_count
-
         }));
 
         setEmployees(guests);
 
+        setPagination(
+          response.meta || {
+            current_page: page,
+            per_page: 10,
+            total: 0,
+            last_page: 1,
+            from: 0,
+            to: 0
+          }
+        );
+
       } else {
 
         showToast(
-          response.message || "Unable to load guests"
+          response.message ||
+          "Unable to load guests"
         );
+
+        setEmployees([]);
 
       }
 
     } catch (error) {
+
+      console.error("Guest list error:", error);
 
       if (error.response?.status !== 401) {
 
@@ -118,17 +154,55 @@ function App() {
 
     } finally {
 
-      setLoading(false);
+      setTableLoading(false);
 
     }
-
   };
-
 
   // Load guest list
   useEffect(() => {
     getGuestList();
   }, []);
+
+  const handlePageChange = (page) => {
+
+    setCurrentPage(page);
+
+    getGuestList(
+      page,
+      search,
+      status,
+      true
+    );
+
+  };
+
+
+  const handleSearch = () => {
+
+    setCurrentPage(1);
+
+    getGuestList(
+      1,
+      search,
+      status
+    );
+
+  };
+
+  const handleStatusChange = (value) => {
+
+    setStatus(value);
+
+    setCurrentPage(1);
+
+    getGuestList(
+      1,
+      search,
+      value
+    );
+
+  };
 
 
   // -----------------------------------------
@@ -263,8 +337,6 @@ function App() {
     }
 
   };
-
-
   // -----------------------------------------
   // RENDER
   // -----------------------------------------
@@ -289,19 +361,42 @@ function App() {
         ) : (
 
           <GuestList
-
             employees={employees}
+
+            pagination={pagination}
+
+            search={search}
+            setSearch={setSearch}
+
+            status={status}
+            setStatus={handleStatusChange}
+
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+
+            onPageChange={handlePageChange}
+
+            onSearch={handleSearch}
+
+            onCheckin={handleCheckin}
 
             openWalkinModal={() =>
               setShowWalkinModal(true)
             }
 
-            onCheckin={handleCheckin}
+            onRefresh={() =>
+              getGuestList(
+                currentPage,
+                search,
+                status
+              )
+            }
+
+            loading={loading}
+            tableLoading={tableLoading}
 
             checkingInId={checkingInId}
-
           />
-
         )}
 
       </main>
@@ -323,7 +418,6 @@ function App() {
 
       />
 
-
       <Toast
 
         message={toast}
@@ -333,7 +427,6 @@ function App() {
         }
 
       />
-
 
       {loading && (
 

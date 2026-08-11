@@ -1,76 +1,25 @@
-import { useMemo, useState } from "react";
-
 import Toolbar from "./Toolbar";
 import BulkActions from "./BulkActions";
 import GuestTable from "./GuestTable";
 
 export default function GuestList({
-
     employees,
-
-    openWalkinModal,
+    pagination,
+    search,
+    setSearch,
+    status,
+    setStatus,
+    currentPage,
+    setCurrentPage,
     onCheckin,
-    checkingInId
-
+    openWalkinModal,
+    onRefresh,
+    loading,
+    tableLoading,
+    checkingInId,
+    onPageChange,
+    onSearch
 }) {
-
-    const [search, setSearch] = useState("");
-
-    const [department, setDepartment] = useState("");
-
-    const [status, setStatus] = useState("");
-
-
-    const filteredEmployees = useMemo(() => {
-
-        return employees.filter(emp => {
-
-            const matchesSearch =
-
-                emp.name.toLowerCase().includes(search.toLowerCase())
-
-                ||
-
-                emp.email.toLowerCase().includes(search.toLowerCase());
-
-    
-            const empStatus =
-
-                emp.isWalkin
-
-                    ? "walkin"
-
-                    : emp.checkin_time
-
-                        ? "checked"
-
-                        : "pending";
-
-            const matchesStatus =
-
-                !status ||
-
-                empStatus === status;
-
-            return (
-
-                matchesSearch &&
-
-                matchesStatus
-
-            );
-
-        });
-
-    }, [
-
-        employees,
-
-        search,
-
-        status
-
-    ]);
 
     return (
 
@@ -79,14 +28,13 @@ export default function GuestList({
             <div className="section-label">
 
                 <span className="eyebrow">
-
                     Roster
-
                 </span>
 
                 All Employees & Guests
 
             </div>
+
 
             <Toolbar
 
@@ -100,25 +48,32 @@ export default function GuestList({
 
                 openWalkinModal={openWalkinModal}
 
-                filteredEmployees={filteredEmployees}
+                onRefresh={onRefresh}
+
+                onSearch={onSearch}
+
+                loading={loading}
+
             />
+
 
             <BulkActions
-
                 selectedCount={0}
-
             />
+
 
             <GuestTable
-
-                employees={filteredEmployees}
+                employees={employees}
+                pagination={pagination}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
                 onCheckin={onCheckin}
                 checkingInId={checkingInId}
-
+                tableLoading={tableLoading}
             />
+
 
         </section>
 
     );
-
 }

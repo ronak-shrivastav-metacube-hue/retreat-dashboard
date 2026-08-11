@@ -20,7 +20,11 @@ export default function GuestList({
     checkingInId,
     onPageChange,
     onSearch,
+<<<<<<< HEAD
     onExportCSV
+=======
+    onOpenScanner
+>>>>>>> bbeceab4b73274c629f919f5879fb43ad8659f5a
 }) {
 
     return (
@@ -56,9 +60,13 @@ export default function GuestList({
 
                 loading={loading}
 
+<<<<<<< HEAD
                 onremindEmail = {onremindEmail}
 
                 onExportCSV = {onExportCSV}
+=======
+                onOpenScanner={onOpenScanner}
+>>>>>>> bbeceab4b73274c629f919f5879fb43ad8659f5a
 
             />
 

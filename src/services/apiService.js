@@ -178,3 +178,30 @@ export const addGuest = async (payload) => {
         throw error;
     }
 };
+
+// QR Code check-in
+export const checkInByQrCode = async (qrString) => {
+
+    const BASE_URL = storage.get("BASE_URL");
+    const TOKEN = storage.get("TOKEN");
+
+    try {
+
+        const response = await axios.post(
+            `${BASE_URL}/event/check-in/${encodeURIComponent(qrString)}`,
+            {},
+            {
+                headers: {
+                    Authorization: TOKEN
+                }
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+
+        throw error;
+
+    }
+};

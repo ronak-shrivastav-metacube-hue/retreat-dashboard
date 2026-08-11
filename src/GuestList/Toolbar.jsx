@@ -1,4 +1,4 @@
-import { exportCSV } from "../utils/exportCSV";
+// import { exportCSV } from "../utils/exportCSV";
 import { printList } from "../utils/printGuests";
 
 
@@ -11,7 +11,9 @@ export default function Toolbar({
     openWalkinModal,
     filteredEmployees,
     onRefresh,
-    loading
+    loading,
+    onremindEmail,
+    onExportCSV
 }) {
     return (
 
@@ -39,6 +41,14 @@ export default function Toolbar({
             <button className="btn btn-ghost" onClick={onRefresh} disabled={loading}>
                 ↻ Refresh
             </button>
+            <button className="btn btn-ghost" 
+                onClick={() =>
+                    onremindEmail()
+                }
+            >
+                Remind
+            </button>
+
 
             <button
                 className="btn btn-ghost"
@@ -47,7 +57,7 @@ export default function Toolbar({
                 ＋ Add Walk-in Guest
             </button>
 
-            <button className="btn btn-ghost" onClick={() => exportCSV(filteredEmployees)}>
+            <button className="btn btn-ghost" onClick={() => onExportCSV(filteredEmployees)}>
                 ⬇ Export CSV
             </button>
 

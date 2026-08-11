@@ -4,7 +4,9 @@ import { storage } from "./utils/storage";
 import {
   getGuestDetailsList,
   quickCheckIn,
-  addGuest
+  addGuest,
+  resendGuestCheckInEmail,
+  exportGuestsCSV
 } from "./services/apiService";
 
 import Header from "./Header/Header";
@@ -292,13 +294,13 @@ function App() {
   // QUICK CHECK-IN
   // -----------------------------------------
 
-  const handleCheckin = async (employee) => {
+  const handleCheckin = async (employee, undo = false) => {
 
     setCheckingInId(employee.id);
 
     try {
 
-      const response = await quickCheckIn(employee);
+      const response = await quickCheckIn(employee, undo);
 
       if (response.success) {
 
@@ -337,6 +339,109 @@ function App() {
     }
 
   };
+
+  // -----------------------------------------
+  // Send Remind Mail
+  // -----------------------------------------
+
+  const remindEmail = async (employee = null) => {
+
+    const payload = {
+      event_slug: EVENT_SLUG,
+      ...(employee != null && { user_id: employee.user_id })
+    };
+    try {
+
+      const response = await resendGuestCheckInEmail(payload);
+
+      if (response.success) {
+
+        showToast(
+          response.message ||
+          "Guest checked in successfully"
+        );
+
+        await getGuestList();
+
+      } else {
+
+        showToast(
+          response.message ||
+          "Unable to check in guest"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Quick check-in error:",
+        error
+      );
+
+      showToast(
+        error.response?.data?.message ||
+        "Something went wrong while checking in guest"
+      );
+
+    } finally {
+
+      setCheckingInId(null);
+
+    }
+
+  };
+
+  // -----------------------------------------
+  // Send Remind Mail
+  // -----------------------------------------
+
+  const exportCSV = async () => {
+
+    const payload = {
+      slug: EVENT_SLUG,
+      // page: page,
+      // perPage: 10,
+      search: search,
+      status: status
+    };
+    try {
+
+      const response = await exportGuestsCSV(payload);
+
+      if (response.success) {
+
+        showToast(
+          response.message ||
+          "Export sent to mail successfully"
+        );
+
+        await getGuestList();
+
+      } else {
+
+        showToast(
+          response.message ||
+          "Unable to sent export mail"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Export error:",
+        error
+      );
+
+      showToast(
+        error.response?.data?.message ||
+        "Something went wrong while exporting in guest"
+      );
+
+    }
+  };
+
   // -----------------------------------------
   // RENDER
   // -----------------------------------------
@@ -379,6 +484,10 @@ function App() {
             onSearch={handleSearch}
 
             onCheckin={handleCheckin}
+
+            onremindEmail={remindEmail}
+
+            onExportCSV={exportCSV}
 
             openWalkinModal={() =>
               setShowWalkinModal(true)

@@ -12,13 +12,15 @@ export default function GuestList({
     currentPage,
     setCurrentPage,
     onCheckin,
+    onremindEmail,
     openWalkinModal,
     onRefresh,
     loading,
     tableLoading,
     checkingInId,
     onPageChange,
-    onSearch
+    onSearch,
+    onExportCSV
 }) {
 
     return (
@@ -54,6 +56,10 @@ export default function GuestList({
 
                 loading={loading}
 
+                onremindEmail = {onremindEmail}
+
+                onExportCSV = {onExportCSV}
+
             />
 
 
@@ -68,6 +74,7 @@ export default function GuestList({
                 currentPage={currentPage}
                 onPageChange={onPageChange}
                 onCheckin={onCheckin}
+                onremindEmail={onremindEmail}
                 checkingInId={checkingInId}
                 tableLoading={tableLoading}
             />

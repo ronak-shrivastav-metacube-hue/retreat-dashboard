@@ -32,9 +32,40 @@ export const getGuestDetailsList = async ({
     return response.data;
 };
 
+// Export guest list
+export const exportGuestsCSV = async ({
+    slug,
+    // page = 1,
+    // perPage = 10,
+    search = "",
+    status = ""
+}) => {
+
+    const BASE_URL = storage.get("BASE_URL");
+    const TOKEN = storage.get("TOKEN");
+
+    const response = await axios.get(
+        `${BASE_URL}/event/export-guest-list/${slug}`,
+        {
+            params: {
+                // page,
+                // per_page: perPage,
+                search,
+                status
+            },
+
+            headers: {
+                Authorization: TOKEN
+            }
+        }
+    );
+
+    return response.data;
+};
+
 
 // Quick check-in
-export const quickCheckIn = async (guest) => {
+export const quickCheckIn = async (guest, undo = false) => {
 
     const BASE_URL = storage.get("BASE_URL");
     const TOKEN = storage.get("TOKEN");
@@ -46,8 +77,35 @@ export const quickCheckIn = async (guest) => {
             {
                 user_id: guest.user_id,
                 event_id: guest.event_id,
-                id: guest.id
+                id: guest.id,
+                undo_operation: undo
             },
+            {
+                headers: {
+                    Authorization: TOKEN
+                }
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+
+        throw error;
+
+    }
+};
+// Send Reminder Mail
+export const resendGuestCheckInEmail = async (payload) => {
+
+    const BASE_URL = storage.get("BASE_URL");
+    const TOKEN = storage.get("TOKEN");
+
+    try {
+
+        const response = await axios.post(
+            `${BASE_URL}/event/send-specific-user-invitation`,
+            payload,
             {
                 headers: {
                     Authorization: TOKEN

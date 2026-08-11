@@ -4,6 +4,7 @@ export default function GuestTable({
     currentPage,
     onPageChange,
     onCheckin,
+    onremindEmail,
     checkingInId,
     tableLoading
 }) {
@@ -99,10 +100,35 @@ export default function GuestTable({
                                     <td>
 
                                         {employee.checkin_time ? (
+                                            <>
+                                            <button
+                                                className="checkin-btn"
+                                                onClick={() =>
+                                                    onCheckin(employee, true)
+                                                }
+                                                disabled={
+                                                    checkingInId ===
+                                                    employee.id
+                                                }
+                                            >
+                                                {checkingInId === employee.id ? (
 
+                                                    <>
+                                                        <span className="button-loader"></span>
+                                                        <span>
+                                                            Pending...
+                                                        </span>
+                                                    </>
+
+                                                    ) : (
+                                                <i>✓ undo </i>
+                                                    )}
+                                            </button>
+                                            
                                             <span className="stamped">
-                                                ✓ {formattedCheckin}
+                                                &nbsp;{formattedCheckin}
                                             </span>
+                                            </>
 
                                         ) : (
 
@@ -124,7 +150,7 @@ export default function GuestTable({
                                                         <>
                                                             <span className="button-loader"></span>
                                                             <span>
-                                                                Checking...
+                                                                Checking In...
                                                             </span>
                                                         </>
 
@@ -137,7 +163,11 @@ export default function GuestTable({
                                                 </button>
 
 
-                                                <button className="remind-btn">
+                                                <button className="remind-btn"
+                                                onClick={() =>
+                                                    onremindEmail(employee)
+                                                }
+                                                >
                                                     Remind
                                                 </button>
 

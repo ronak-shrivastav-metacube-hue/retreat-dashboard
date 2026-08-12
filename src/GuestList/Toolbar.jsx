@@ -22,7 +22,7 @@ export default function Toolbar({
     onRefresh,
     loading,
     onremindEmail,
-    onExportCSV
+    onExportCSV,
     onOpenScanner,
     onSearch
 }) {

@@ -6,7 +6,7 @@ import {
   quickCheckIn,
   addGuest,
   resendGuestCheckInEmail,
-  exportGuestsCSV
+  exportGuestsCSV,
   checkInByQrCode
 } from "./services/apiService";
 
@@ -45,7 +45,7 @@ function App() {
   // API CONFIGURATION
   // -----------------------------------------
 
-  const EVENT_SLUG = "annual-retreat-26";
+  const EVENT_SLUG = "annual_outing_2026";
 
   useEffect(() => {
 
@@ -56,7 +56,7 @@ function App() {
 
     storage.set(
       "TOKEN",
-      "Bearer 157485|GZqt2SJLs5bdylkklYHe3GamIujroac8fP3jIPux68639db5"
+      "Bearer 106842|4cIjhYCYF8ETEYeWNWkzhdBzTxpBjITi4Gi3vQ3wd0f7ec27"
     );
 
     storage.set(

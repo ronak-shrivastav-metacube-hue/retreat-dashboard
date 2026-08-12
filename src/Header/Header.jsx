@@ -1,7 +1,10 @@
 import useClock from "../hooks/useClock";
+import { storage } from "../utils/storage";
 
 export default function Header({ activeTab, setActiveTab }) {
     const now = useClock();
+    const EVENT_NAME = storage.get("event_name");
+    const EVENT_DESC = storage.get("event_desc");
     return (
 
         <header className="top">
@@ -34,8 +37,8 @@ export default function Header({ activeTab, setActiveTab }) {
                         <circle cx="21" cy="13" r="4.2" fill="#F2A93B" />
                     </svg>
                     <div>
-                        <h1>Splash Bash 2026</h1>
-                        <p>Ananth Aravali Resort & Water Park · Event Desk</p>
+                        <h1>{ EVENT_NAME }</h1>
+                        <p>{ EVENT_DESC }</p>
                     </div>
                 </div>
                 <div className="clock-box">

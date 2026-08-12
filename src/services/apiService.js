@@ -11,7 +11,7 @@ export const getGuestDetailsList = async ({
 }) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
+    const TOKEN = "Bearer "+ storage.get("token");
 
     const response = await axios.get(
         `${BASE_URL}/event/new/guest-list/${slug}`,

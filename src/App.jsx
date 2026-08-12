@@ -45,24 +45,26 @@ function App() {
   // API CONFIGURATION
   // -----------------------------------------
 
-  const EVENT_SLUG = "annual_outing_2026";
+  // const EVENT_SLUG = "annual_outing_2026";
+  const EVENT_SLUG = storage.get("event_slug") || "annual_outing_2026";
+  const EVENT_DESC = storage.get("event_desc") || "One Family, One Day. Endless Memories" 
 
   useEffect(() => {
 
     storage.set(
       "BASE_URL",
-      "http://localhost:8000/api"
+      "https://metacafe-uat-api.mcapps.in/api"
     );
 
-    storage.set(
-      "TOKEN",
-      "Bearer 106842|4cIjhYCYF8ETEYeWNWkzhdBzTxpBjITi4Gi3vQ3wd0f7ec27"
-    );
+    // storage.set(
+    //   "TOKEN",
+    //   // "Bearer 106842|4cIjhYCYF8ETEYeWNWkzhdBzTxpBjITi4Gi3vQ3wd0f7ec27"
+    // );
 
-    storage.set(
-      "EVENT_SLUG",
-      EVENT_SLUG
-    );
+    // storage.set(
+    //   "EVENT_SLUG",
+    //   EVENT_SLUG
+    // );
 
   }, []);
 
@@ -152,8 +154,9 @@ function App() {
           error.response?.data?.message ||
           "Something went wrong"
         );
-
       }
+
+      window.location.href = '/'; 
 
     } finally {
 

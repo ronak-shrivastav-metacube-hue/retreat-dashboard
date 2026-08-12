@@ -1,5 +1,6 @@
-// import { exportCSV } from "../utils/exportCSV";
+import { useState } from "react";
 import { printList } from "../utils/printGuests";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faRotateRight,
@@ -7,7 +8,10 @@ import {
     faFileExport,
     faPrint,
     faQrcode,
-    faMagnifyingGlass
+    faMagnifyingGlass,
+    faEllipsisVertical,
+    faFileImport,
+    faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -16,7 +20,6 @@ export default function Toolbar({
     setSearch,
     status,
     setStatus,
-    departments,
     openWalkinModal,
     filteredEmployees,
     onRefresh,
@@ -24,13 +27,19 @@ export default function Toolbar({
     onremindEmail,
     onExportCSV,
     onOpenScanner,
-    onSearch
+    onSearch,
+    onImportRSVP
 }) {
+
+    const [showMore, setShowMore] = useState(false);
+
     return (
 
         <div className="toolbar">
 
+            {/* SEARCH */}
             <div className="search-input-wrapper">
+
                 <input
                     type="text"
                     placeholder="Search name or email..."
@@ -42,56 +51,133 @@ export default function Toolbar({
                         }
                     }}
                 />
-                <FontAwesomeIcon icon={faMagnifyingGlass} className="search-icon" />
+
+                <FontAwesomeIcon
+                    icon={faMagnifyingGlass}
+                    className="search-icon"
+                />
 
             </div>
 
 
+            {/* STATUS */}
             <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
             >
-
                 <option value="">All Statuses</option>
                 <option value="checked">Checked In</option>
                 <option value="pending">Pending</option>
             </select>
 
+
             <div className="spacer"></div>
 
-            <button className="btn btn-ghost" onClick={onRefresh} disabled={loading}>
-                <FontAwesomeIcon icon={faRotateRight} /> Refresh
-            </button>
-            <button className="btn btn-ghost" 
-                onClick={() =>
-                    onremindEmail()
-                }
+
+            {/* REFRESH */}
+            <button
+                className="btn btn-ghost"
+                onClick={onRefresh}
+                disabled={loading}
+                title="Refresh"
             >
-                Remind
+                <FontAwesomeIcon icon={faRotateRight} />
+                <span>Refresh</span>
             </button>
 
 
+            {/* WALK-IN */}
             <button
                 className="btn btn-ghost"
                 onClick={openWalkinModal}
             >
-                <FontAwesomeIcon icon={faUserPlus} /> Add Walk-in Guest
+                <FontAwesomeIcon icon={faUserPlus} />
+                <span>Add Walk-in</span>
             </button>
 
-            <button className="btn btn-ghost" onClick={() => onExportCSV(filteredEmployees)}>
-                ⬇ Export CSV
-            </button>
 
-            <button className="btn btn-ghost" onClick={() => printList(filteredEmployees)}>
-                <FontAwesomeIcon icon={faPrint} /> Print
-            </button>
+            {/* MORE */}
+            <div className="toolbar-more">
 
-            <button className="btn btn-ghost" onClick={onOpenScanner}>
-                <FontAwesomeIcon icon={faQrcode} /> Open QR Scanner
-            </button>
+                <button
+                    className="btn btn-ghost more-btn"
+                    onClick={() => setShowMore(!showMore)}
+                >
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                    <span>More</span>
+                </button>
+
+
+                {showMore && (
+
+                    <div className="more-menu">
+
+                        <button
+                            className="more-menu-item"
+                            onClick={() => {
+                                onOpenScanner();
+                                setShowMore(false);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faQrcode} />
+                            <span>Scan QR</span>
+                        </button>
+
+
+                        <button
+                            type="button"
+                            className="more-menu-item"
+                            onClick={() => {
+                                setShowMore(false);
+                                onImportRSVP();
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faFileImport} />
+                            <span>Import RSVP</span>
+                        </button>
+
+
+                        <button
+                            className="more-menu-item"
+                            onClick={() => {
+                                onremindEmail();
+                                setShowMore(false);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faEnvelope} />
+                            <span>Remind</span>
+                        </button>
+
+
+                        <button
+                            className="more-menu-item"
+                            onClick={() => {
+                                onExportCSV(filteredEmployees);
+                                setShowMore(false);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faFileExport} />
+                            <span>Export CSV</span>
+                        </button>
+
+
+                        <button
+                            className="more-menu-item"
+                            onClick={() => {
+                                printList(filteredEmployees);
+                                setShowMore(false);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faPrint} />
+                            <span>Print</span>
+                        </button>
+
+                    </div>
+
+                )}
+
+            </div>
 
         </div>
-
     );
-
 }

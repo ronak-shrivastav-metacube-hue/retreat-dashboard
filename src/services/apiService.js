@@ -205,3 +205,34 @@ export const checkInByQrCode = async (qrString) => {
 
     }
 };
+
+export const importRSVP = async (file, eventSlug) => {
+    const BASE_URL = storage.get("BASE_URL");
+    const TOKEN = storage.get("TOKEN");
+    try {
+        const formData = new FormData();
+
+        formData.append("rsvpExcel", file);
+        formData.append("event_slug", eventSlug);
+
+        const response = await axios.post(
+            `${BASE_URL}/event/import/rsvp`,
+            formData,
+            {
+                headers: {
+                    Authorization: TOKEN,
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+
+        console.error("Import RSVP API error:", error);
+
+        throw error;
+    }
+};
+

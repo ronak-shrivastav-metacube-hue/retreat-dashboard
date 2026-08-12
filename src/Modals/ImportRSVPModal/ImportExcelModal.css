@@ -1,0 +1,587 @@
+/* =========================================
+   IMPORT RSVP MODAL
+========================================= */
+
+.import-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(11, 61, 63, 0.48);
+
+    backdrop-filter: blur(3px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    z-index: 9999;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.import-modal {
+    width: 100%;
+    max-width: 1300px;
+
+    background: var(--card);
+
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 70px rgba(4, 56, 98, 0.25);
+
+    animation: import-modal-show .2s ease;
+}
+
+
+@keyframes import-modal-show {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.import-modal-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 24px 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(214, 243, 250, .65),
+            rgba(255, 255, 255, .95)
+        );
+
+    border-bottom: 1px solid var(--line);
+}
+
+
+.import-modal-header h3 {
+
+    margin: 0;
+
+    font-family: 'Fraunces', serif;
+
+    font-size: 1.35rem;
+
+    color: var(--lagoon-deep);
+
+}
+
+
+.import-modal-header p {
+
+    margin-top: 5px;
+
+    font-size: .78rem;
+
+    color: var(--ink-soft);
+
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.import-modal-close {
+
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--line);
+
+    border-radius: 8px;
+
+    background: var(--card);
+
+    color: var(--ink-soft);
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        color .15s ease,
+        border-color .15s ease;
+
+}
+
+
+.import-modal-close:hover {
+
+    background: var(--coral-soft);
+
+    color: var(--coral);
+
+    border-color: var(--coral);
+
+}
+
+
+.import-modal-close:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+.import-modal-body {
+
+    padding: 24px;
+
+}
+
+
+.import-section-label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: var(--ink);
+
+    font-size: .78rem;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================
+   DROP ZONE
+========================================= */
+
+.excel-dropzone {
+
+    min-height: 190px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 24px;
+
+    border: 2px dashed #b9dfe8;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(234, 250, 253, .85),
+            rgba(246, 252, 254, .9)
+        );
+
+    cursor: pointer;
+
+    transition:
+        border-color .15s ease,
+        background .15s ease,
+        transform .15s ease;
+
+}
+
+
+.excel-dropzone:hover {
+
+    border-color: var(--aqua);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(220, 247, 252, .95),
+            rgba(246, 252, 254, .95)
+        );
+
+}
+
+
+.excel-dropzone:active {
+
+    transform: scale(.995);
+
+}
+
+
+/* =========================================
+   UPLOAD ICON
+========================================= */
+
+.excel-upload-icon {
+
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 14px;
+
+    background: var(--aqua-soft);
+
+    color: var(--lagoon);
+
+    font-size: 1.35rem;
+
+    box-shadow:
+        0 5px 12px rgba(0, 119, 182, .08);
+
+}
+
+
+/* =========================================
+   UPLOAD TEXT
+========================================= */
+
+.excel-upload-title {
+
+    color: var(--lagoon-deep);
+
+    font-size: .95rem;
+
+    font-weight: 700;
+
+}
+
+
+.excel-upload-description {
+
+    margin-top: 5px;
+
+    color: var(--ink-soft);
+
+    font-size: .75rem;
+
+}
+
+
+.excel-upload-hint {
+
+    margin-top: 10px;
+
+    padding: 4px 9px;
+
+    border-radius: 5px;
+
+    background: var(--sand);
+
+    border: 1px solid var(--line);
+
+    color: var(--ink-soft);
+
+    font-family: 'JetBrains Mono', monospace;
+
+    font-size: .62rem;
+
+}
+
+
+/* =========================================
+   SELECTED FILE
+========================================= */
+
+.excel-dropzone.has-file {
+
+    min-height: 120px;
+
+    border-style: solid;
+
+    border-color: var(--aqua);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(214, 243, 250, .55),
+            rgba(255, 255, 255, .95)
+        );
+
+}
+
+
+.selected-file {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    text-align: left;
+
+}
+
+
+.selected-file-icon {
+
+    width: 46px;
+    height: 46px;
+
+    min-width: 46px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--coral-soft);
+
+    color: var(--coral);
+
+    font-size: 1.2rem;
+
+}
+
+
+.selected-file-info {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.selected-file-name {
+
+    color: var(--ink);
+
+    font-size: .84rem;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.selected-file-size {
+
+    margin-top: 4px;
+
+    color: var(--ink-soft);
+
+    font-family: 'JetBrains Mono', monospace;
+
+    font-size: .65rem;
+
+}
+
+
+/* =========================================
+   REMOVE FILE
+========================================= */
+
+.remove-file-btn {
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--line);
+
+    border-radius: 8px;
+
+    background: var(--card);
+
+    color: var(--ink-soft);
+
+    cursor: pointer;
+
+}
+
+
+.remove-file-btn:hover {
+
+    color: var(--coral);
+
+    border-color: var(--coral);
+
+    background: var(--coral-soft);
+
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.import-error {
+
+    margin-top: 10px;
+
+    padding: 9px 12px;
+
+    border-radius: 8px;
+
+    background: var(--coral-soft);
+
+    border: 1px solid rgba(225, 92, 63, .2);
+
+    color: #b8422c;
+
+    font-size: .74rem;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.import-modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 16px 24px;
+
+    background: #fbfdfd;
+
+    border-top: 1px solid var(--line);
+
+}
+
+
+/* =========================================
+   IMPORT BUTTON
+========================================= */
+
+.import-submit-btn {
+
+    min-width: 125px;
+
+    justify-content: center;
+
+}
+
+
+.import-submit-btn:disabled {
+
+    opacity: .5;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .import-modal-overlay {
+
+        padding: 14px;
+
+    }
+
+
+    .import-modal {
+
+        max-width: 100%;
+
+        border-radius: 14px;
+
+    }
+
+
+    .import-modal-header {
+
+        padding: 18px;
+
+    }
+
+
+    .import-modal-body {
+
+        padding: 18px;
+
+    }
+
+
+    .import-modal-footer {
+
+        padding: 14px 18px;
+
+    }
+
+
+    .excel-dropzone {
+
+        min-height: 170px;
+
+    }
+
+}

@@ -795,6 +795,14 @@ tfoot td {
     flex-direction: column;
     align-items: stretch;
   }
+
+  .more-menu {
+    left: 0;
+  }
+
+  .table-wrap {
+    overflow: auto;
+  }
 }
 
 @media print {
@@ -1487,4 +1495,105 @@ tfoot td {
 
 .search-input-wrapper input {
     padding-left: 36px;
+}
+
+/* =========================================
+   TOOLBAR MORE MENU
+========================================= */
+
+.toolbar-more {
+    position: relative;
+}
+
+
+.more-btn {
+    min-width: 82px;
+    justify-content: center;
+}
+
+
+/* Dropdown */
+
+.more-menu {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 190px;
+
+    padding: 6px;
+
+    background: var(--card);
+
+    border: 1px solid var(--line);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 12px 30px rgba(4, 56, 98, 0.16);
+
+    z-index: 1000;
+
+    animation: more-menu-show .12s ease-out;
+}
+
+
+@keyframes more-menu-show {
+
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Menu item */
+
+.more-menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 11px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--lagoon-deep);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .82rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+.more-menu-item svg {
+    width: 15px;
+    min-width: 15px;
+    color: var(--lagoon);
+}
+
+.more-menu-item:hover {
+    background: var(--aqua-soft);
+    color: var(--lagoon-deep);
+}
+
+.more-menu-item:hover svg {
+    color: var(--lagoon-deep);
+}
+
+/* Import gets a little visual priority */
+.more-menu-item.import-rsvp {
+    color: var(--coral);
+}
+
+.more-menu-item.import-rsvp svg {
+    color: var(--coral);
 }

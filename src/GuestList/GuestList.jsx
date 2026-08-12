@@ -21,7 +21,8 @@ export default function GuestList({
     onPageChange,
     onSearch,
     onExportCSV,
-    onOpenScanner
+    onOpenScanner,
+    onImportRSVP
 }) {
 
     return (
@@ -61,6 +62,7 @@ export default function GuestList({
 
                 onExportCSV = {onExportCSV}
                 onOpenScanner={onOpenScanner}
+                onImportRSVP={onImportRSVP}
 
             />
 

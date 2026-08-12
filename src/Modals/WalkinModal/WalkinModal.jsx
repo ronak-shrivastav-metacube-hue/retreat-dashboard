@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getCustomers } from "../services/apiService";
+import { getCustomers } from "../../services/apiService";
 
 export default function WalkinModal({
     open,

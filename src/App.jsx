@@ -7,15 +7,17 @@ import {
   addGuest,
   resendGuestCheckInEmail,
   exportGuestsCSV,
-  checkInByQrCode
+  checkInByQrCode,
+  importRSVP
 } from "./services/apiService";
 
 import Header from "./Header/Header";
 import Dashboard from "./Dashboard/Dashboard";
 import GuestList from "./GuestList/GuestList";
-import WalkinModal from "./WalkinModal/WalkinModal";
+import WalkinModal from "./Modals/WalkinModal/WalkinModal";
 import Toast from "./Toast/Toast";
-import QRScanner from "./QRScanner/QRScanner";
+import QRScanner from "./Modals/QRScanner/QRScanner";
+import ImportRSVPModal from "./Modals/ImportRSVPModal/ImportRSVPModal";
 
 function App() {
 
@@ -27,6 +29,7 @@ function App() {
   const [checkingInId, setCheckingInId] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
   const [showQRScanner, setShowQRScanner] = useState(false);
+  const [showImportRSVP, setShowImportRSVP] = useState(false);
 
   const [pagination, setPagination] = useState({
     current_page: 1,
@@ -435,6 +438,73 @@ function App() {
     }
   };
 
+  // -----------------------------------------
+  // IMPORT RSVP
+  // -----------------------------------------
+
+  const openImportRSVPModal = () => {
+    setShowImportRSVP(true);
+  };
+
+
+  const handleImportRSVP = async (file) => {
+
+    if (!file) {
+      showToast("Please select an Excel file");
+      return null;
+    }
+
+    setLoading(true);
+
+    try {
+
+      const response = await importRSVP(
+        file,
+        EVENT_SLUG
+      );
+
+      if (response.success) {
+
+        showToast(
+          response.message || "RSVP imported successfully"
+        );
+
+        await getGuestList();
+
+        return response;
+
+      }
+
+      showToast(
+        response.message || "Unable to import RSVP"
+      );
+
+      return response;
+
+    } catch (error) {
+
+      console.error(
+        "RSVP import error:",
+        error
+      );
+
+      showToast(
+        error.response?.data?.message ||
+        "Something went wrong while importing RSVP"
+      );
+
+      return null;
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
+
+
+
   return (
     <>
 
@@ -495,6 +565,7 @@ function App() {
 
             checkingInId={checkingInId}
             onOpenScanner={() => setShowQRScanner(true)}
+            onImportRSVP={openImportRSVPModal}
           />
         )}
 
@@ -532,6 +603,17 @@ function App() {
         onClose={() => setShowQRScanner(false)}
         onScanSuccess={handleScanSuccess}
       />
+
+      <ImportRSVPModal
+        open={showImportRSVP}
+        onClose={() => setShowImportRSVP(false)}
+        eventSlug={EVENT_SLUG}
+        onImport={handleImportRSVP}
+        onSuccess={async () => {
+          await getGuestList();
+        }}
+      />
+
 
       {loading && (
 

@@ -32,173 +32,165 @@ export default function GuestTable({
                 </div>
             )}
 
-            <table>
+            <div className="table-scroll">
+                <table>
 
-                <thead>
+                    <thead>
 
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
 
-                </thead>
-
-
-                <tbody>
-
-                    {employees.length > 0 ? (
-
-                        employees.map((employee) => {
-
-                            const status = employee.isWalkin
-                                ? "Walk-in"
-                                : employee.checkin_time
-                                    ? "Checked In"
-                                    : "Pending";
-
-                            const checkinDate =
-                                employee.checkin_time
-                                    ? new Date(employee.checkin_time)
-                                    : null;
-
-                            const formattedCheckin =
-                                checkinDate
-                                    ? `${String(
-                                        checkinDate.getDate()
-                                    ).padStart(2, "0")}-${String(
-                                        checkinDate.getMonth() + 1
-                                    ).padStart(2, "0")}-${checkinDate.getFullYear()} ${checkinDate.toLocaleTimeString(
-                                        [],
-                                        {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            second: "2-digit",
-                                            hour12: true
-                                        }
-                                    )}`
-                                    : "—";
+                    </thead>
 
 
-                            return (
+                    <tbody>
 
-                                <tr key={employee.id}>
+                        {employees.length > 0 ? (
 
-                                    <td>
-                                        {employee.name}
-                                    </td>
+                            employees.map((employee) => {
 
-                                    <td>
-                                        {employee.email}
-                                    </td>
+                                const status = employee.isWalkin
+                                    ? "Walk-in"
+                                    : employee.checkin_time
+                                        ? "Checked In"
+                                        : "Pending";
 
-                                    <td>
-                                        {status}
-                                    </td>
+                                const checkinDate =
+                                    employee.checkin_time
+                                        ? new Date(employee.checkin_time)
+                                        : null;
 
-                                    <td>
+                                const formattedCheckin =
+                                    checkinDate
+                                        ? `${String(
+                                            checkinDate.getDate()
+                                        ).padStart(2, "0")}-${String(
+                                            checkinDate.getMonth() + 1
+                                        ).padStart(2, "0")}-${checkinDate.getFullYear()} ${checkinDate.toLocaleTimeString(
+                                            [],
+                                            {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                second: "2-digit",
+                                                hour12: true
+                                            }
+                                        )}`
+                                        : "—";
 
-                                        {employee.checkin_time ? (
-                                            <>
-                                            <button
-                                                className="checkin-btn"
-                                                onClick={() =>
-                                                    onCheckin(employee, true)
-                                                }
-                                                disabled={
-                                                    checkingInId ===
-                                                    employee.id
-                                                }
-                                            >
-                                                {checkingInId === employee.id ? (
 
-                                                    <>
-                                                        <span className="button-loader"></span>
-                                                        <span>
-                                                            Pending...
-                                                        </span>
-                                                    </>
+                                return (
 
-                                                    ) : (
-                                                <i>✓ undo </i>
-                                                    )}
-                                            </button>
-                                            
-                                            <span className="stamped">
-                                                &nbsp;{formattedCheckin}
-                                            </span>
-                                            </>
+                                    <tr key={employee.id}>
 
-                                        ) : (
+                                        <td>
+                                            {employee.name}
+                                        </td>
 
-                                            <>
+                                        <td>
+                                            {employee.email}
+                                        </td>
 
+                                        <td>
+                                            {status}
+                                        </td>
+
+                                        <td>
+
+                                            {employee.checkin_time ? (
+                                                <>
                                                 <button
                                                     className="checkin-btn"
                                                     onClick={() =>
-                                                        onCheckin(employee)
+                                                        onCheckin(employee, true)
                                                     }
                                                     disabled={
                                                         checkingInId ===
                                                         employee.id
                                                     }
                                                 >
-
                                                     {checkingInId === employee.id ? (
 
                                                         <>
                                                             <span className="button-loader"></span>
-                                                            <span>
-                                                                Checking In...
-                                                            </span>
+                                                            <span> Pending... </span>
                                                         </>
 
-                                                    ) : (
-
-                                                        "Quick Check in"
-
-                                                    )}
-
+                                                        ) : (
+                                                    <i>✓ undo </i>
+                                                        )}
                                                 </button>
 
+                                                <span className="stamped">
+                                                    &nbsp;{formattedCheckin}
+                                                </span>
+                                                </>
 
-                                                <button className="remind-btn"
-                                                onClick={() =>
-                                                    onremindEmail(employee)
-                                                }
-                                                >
-                                                    Remind
-                                                </button>
+                                            ) : (
 
-                                            </>
+                                                <>
 
-                                        )}
+                                                    <button
+                                                        className="checkin-btn"
+                                                        onClick={() =>
+                                                            onCheckin(employee)
+                                                        }
+                                                        disabled={
+                                                            checkingInId ===
+                                                            employee.id
+                                                        }
+                                                    >
 
-                                    </td>
+                                                        {checkingInId === employee.id ? (
 
-                                </tr>
+                                                            <>
+                                                                <span className="button-loader"></span>
+                                                                <span> Checking In... </span>
+                                                            </>
 
-                            );
+                                                        ) : ("Quick Check in")}
 
-                        })
+                                                    </button>
 
-                    ) : (
+                                                    <button className="remind-btn"
+                                                    onClick={() =>
+                                                        onremindEmail(employee)
+                                                    }
+                                                    >
+                                                        Remind
+                                                    </button>
 
-                        <tr>
+                                                </>
 
-                            <td colSpan={4}>
-                                No guests found
-                            </td>
+                                            )}
 
-                        </tr>
+                                        </td>
 
-                    )}
+                                    </tr>
 
-                </tbody>
+                                );
 
-            </table>
+                            })
 
+                        ) : (
+
+                            <tr>
+
+                                <td colSpan={4}>
+                                    No guests found
+                                </td>
+
+                            </tr>
+
+                        )}
+
+                    </tbody>
+
+                </table>
+            </div>
 
             {/* SERVER-SIDE PAGINATION */}
 

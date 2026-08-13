@@ -6,7 +6,8 @@ export default function GuestTable({
     onCheckin,
     onremindEmail,
     checkingInId,
-    tableLoading
+    tableLoading,
+    remindMailId
 }) {
 
     const goToPage = (page) => {
@@ -159,11 +160,19 @@ export default function GuestTable({
                                                     onClick={() =>
                                                         onremindEmail(employee)
                                                     }
+                                                    disabled={
+                                                        remindMailId?.some(id => String(id) === String(employee.user_id))
+                                                    }
                                                     >
-                                                        Remind
+                                                        {remindMailId?.some(id => String(id) === String(employee.user_id)) ? (
+                                                            <>
+                                                                <span className="button-loader"></span>
+                                                                <span> Sending... </span>
+                                                            </>
+                                                        ) : ("Remind")}
                                                     </button>
-
                                                 </>
+                                                  
 
                                             )}
 

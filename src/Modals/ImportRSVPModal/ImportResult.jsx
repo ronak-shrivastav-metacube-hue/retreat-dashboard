@@ -106,7 +106,7 @@ export default function ImportResult({ result }) {
 
                                                 const status = String(value || "").trim().toLowerCase();
 
-                                                if (status === "pending") {
+                                                if (status === "pending walk-in yet") {
 
                                                     return (
                                                         <td key={columnIndex}>

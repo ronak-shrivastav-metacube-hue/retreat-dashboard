@@ -22,7 +22,8 @@ export default function GuestList({
     onSearch,
     onExportCSV,
     onOpenScanner,
-    onImportRSVP
+    onImportRSVP,
+    remindMailId
 }) {
 
     return (
@@ -63,6 +64,7 @@ export default function GuestList({
                 onExportCSV = {onExportCSV}
                 onOpenScanner={onOpenScanner}
                 onImportRSVP={onImportRSVP}
+                remindMailId={remindMailId}
 
             />
 
@@ -81,6 +83,7 @@ export default function GuestList({
                 onremindEmail={onremindEmail}
                 checkingInId={checkingInId}
                 tableLoading={tableLoading}
+                remindMailId={remindMailId}
             />
 
 

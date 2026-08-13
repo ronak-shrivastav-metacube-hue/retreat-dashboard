@@ -3,7 +3,7 @@ import { storage } from "../utils/storage";
 
 const TOKEN = "Bearer "+ storage.get("token");
 // const TOKEN =  storage.get("token"); // for local testing without Bearer prefix
-const BASE_URL = storage.get("BASE_URL");
+const BASE_URL = storage.get("BASE_URL") || "https://metacafe-uat-api.mcapps.in/api";
 // Get guest list
 export const getCountDashboard = async ({
     slug

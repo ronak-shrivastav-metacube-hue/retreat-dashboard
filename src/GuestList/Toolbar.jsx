@@ -95,6 +95,17 @@ export default function Toolbar({
                 <span>Add Walk-in</span>
             </button>
 
+            {/* QR Code Scanner */}
+            <button
+                className="btn btn-ghost"
+                onClick={() => {
+                    onOpenScanner();
+                    setShowMore(false);
+                }}
+            >
+                <FontAwesomeIcon icon={faQrcode} />
+                <span>Scan QR</span>
+            </button>
 
             {/* MORE */}
             <div className="toolbar-more">
@@ -111,19 +122,6 @@ export default function Toolbar({
                 {showMore && (
 
                     <div className="more-menu">
-
-                        <button
-                            className="more-menu-item"
-                            onClick={() => {
-                                onOpenScanner();
-                                setShowMore(false);
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faQrcode} />
-                            <span>Scan QR</span>
-                        </button>
-
-
                         <button
                             type="button"
                             className="more-menu-item"

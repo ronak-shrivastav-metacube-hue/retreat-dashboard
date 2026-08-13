@@ -1,6 +1,7 @@
 import axios from "axios";
 import { storage } from "../utils/storage";
 
+const TOKEN = "Bearer "+ storage.get("token");
 // Get guest list
 export const getGuestDetailsList = async ({
     slug,
@@ -11,7 +12,6 @@ export const getGuestDetailsList = async ({
 }) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = "Bearer "+ storage.get("token");
 
     const response = await axios.get(
         `${BASE_URL}/event/new/guest-list/${slug}`,
@@ -42,7 +42,6 @@ export const exportGuestsCSV = async ({
 }) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
 
     const response = await axios.get(
         `${BASE_URL}/event/export-guest-list/${slug}`,
@@ -68,7 +67,6 @@ export const exportGuestsCSV = async ({
 export const quickCheckIn = async (guest, undo = false) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
 
     try {
 
@@ -99,7 +97,6 @@ export const quickCheckIn = async (guest, undo = false) => {
 export const resendGuestCheckInEmail = async (payload) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
 
     try {
 
@@ -126,7 +123,6 @@ export const resendGuestCheckInEmail = async (payload) => {
 export const getCustomers = async (searchText, eventSlug) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
 
     try {
 
@@ -158,7 +154,6 @@ export const getCustomers = async (searchText, eventSlug) => {
 // Register walk-in guest
 export const addGuest = async (payload) => {
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
 
     try {
         const response = await axios.post(
@@ -183,7 +178,6 @@ export const addGuest = async (payload) => {
 export const checkInByQrCode = async (qrString) => {
 
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
 
     try {
 
@@ -208,7 +202,6 @@ export const checkInByQrCode = async (qrString) => {
 
 export const importRSVP = async (file, eventSlug) => {
     const BASE_URL = storage.get("BASE_URL");
-    const TOKEN = storage.get("TOKEN");
     try {
         const formData = new FormData();
 

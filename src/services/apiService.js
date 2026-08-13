@@ -2,6 +2,26 @@ import axios from "axios";
 import { storage } from "../utils/storage";
 
 const TOKEN = "Bearer "+ storage.get("token");
+// const TOKEN =  storage.get("token"); // for local testing without Bearer prefix
+const BASE_URL = storage.get("BASE_URL");
+// Get guest list
+export const getCountDashboard = async ({
+    slug
+}) => {
+
+
+    const response = await axios.get(
+        `${BASE_URL}/event/get-count/${slug}`,
+        {
+
+            headers: {
+                Authorization: TOKEN
+            }
+        }
+    );
+
+    return response.data;
+};
 // Get guest list
 export const getGuestDetailsList = async ({
     slug,
@@ -11,7 +31,6 @@ export const getGuestDetailsList = async ({
     status = ""
 }) => {
 
-    const BASE_URL = storage.get("BASE_URL");
 
     const response = await axios.get(
         `${BASE_URL}/event/new/guest-list/${slug}`,
@@ -41,8 +60,6 @@ export const exportGuestsCSV = async ({
     status = ""
 }) => {
 
-    const BASE_URL = storage.get("BASE_URL");
-
     const response = await axios.get(
         `${BASE_URL}/event/export-guest-list/${slug}`,
         {
@@ -66,7 +83,6 @@ export const exportGuestsCSV = async ({
 // Quick check-in
 export const quickCheckIn = async (guest, undo = false) => {
 
-    const BASE_URL = storage.get("BASE_URL");
 
     try {
 
@@ -88,18 +104,17 @@ export const quickCheckIn = async (guest, undo = false) => {
         return response.data;
 
     } catch (error) {
-
+        console.log(error)
         throw error;
-
+        
     }
 };
 // Send Reminder Mail
 export const resendGuestCheckInEmail = async (payload) => {
-
-    const BASE_URL = storage.get("BASE_URL");
-
+    
+    
     try {
-
+        
         const response = await axios.post(
             `${BASE_URL}/event/send-specific-user-invitation`,
             payload,
@@ -109,23 +124,23 @@ export const resendGuestCheckInEmail = async (payload) => {
                 }
             }
         );
-
+        
         return response.data;
-
+        
     } catch (error) {
-
+        
+        console.log(error)
         throw error;
-
+        
     }
 };
 
 // Get user
 export const getCustomers = async (searchText, eventSlug) => {
-
-    const BASE_URL = storage.get("BASE_URL");
-
+    
+    
     try {
-
+        
         const response = await axios.get(
             `${BASE_URL}/user/list`,
             {
@@ -141,20 +156,20 @@ export const getCustomers = async (searchText, eventSlug) => {
                 }
             }
         );
-
+        
         return response.data;
-
+        
     } catch (error) {
-
+        console.log(error)
+        
         throw error;
-
+        
     }
 };
 
 // Register walk-in guest
 export const addGuest = async (payload) => {
-    const BASE_URL = storage.get("BASE_URL");
-
+    
     try {
         const response = await axios.post(
             `${BASE_URL}/event/register-walk-in`,
@@ -166,21 +181,20 @@ export const addGuest = async (payload) => {
                 }
             }
         );
-
+        
         return response.data;
-
+        
     } catch (error) {
+        console.log(error)
         throw error;
     }
 };
 
 // QR Code check-in
 export const checkInByQrCode = async (qrString) => {
-
-    const BASE_URL = storage.get("BASE_URL");
-
+    
     try {
-
+        
         const response = await axios.post(
             `${BASE_URL}/event/check-in/${encodeURIComponent(qrString)}`,
             {},
@@ -190,18 +204,18 @@ export const checkInByQrCode = async (qrString) => {
                 }
             }
         );
-
+        
         return response.data;
-
+        
     } catch (error) {
-
+        
+        console.log(error)
         throw error;
-
+        
     }
 };
 
 export const importRSVP = async (file, eventSlug) => {
-    const BASE_URL = storage.get("BASE_URL");
     try {
         const formData = new FormData();
 

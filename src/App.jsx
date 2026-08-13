@@ -8,7 +8,8 @@ import {
   resendGuestCheckInEmail,
   exportGuestsCSV,
   checkInByQrCode,
-  importRSVP
+  importRSVP,
+  getCountDashboard
 } from "./services/apiService";
 
 import Header from "./Header/Header";
@@ -22,6 +23,7 @@ import ImportRSVPModal from "./Modals/ImportRSVPModal/ImportRSVPModal";
 function App() {
 
   const [employees, setEmployees] = useState([]);
+  const [dashBoardCount, setDashBoardCount] = useState([]);
   const [activeTab, setActiveTab] = useState("guests");
   const [showWalkinModal, setShowWalkinModal] = useState(false);
   const [toast, setToast] = useState("");
@@ -48,8 +50,8 @@ function App() {
   // API CONFIGURATION
   // -----------------------------------------
 
-  // const EVENT_SLUG = "annual_outing_2026";
-  const EVENT_SLUG = storage.get("event_slug") || "annual_outing_2026";
+  // const EVENT_SLUG = "annual-retreat-26";
+  const EVENT_SLUG = storage.get("event_slug") || "annual-retreat-26";
   const EVENT_DESC = storage.get("event_desc") || "One Family, One Day. Endless Memories" 
 
   useEffect(() => {
@@ -57,11 +59,12 @@ function App() {
     storage.set(
       "BASE_URL",
       "https://metacafe-uat-api.mcapps.in/api"
+      // "http://localhost:8000/api"
     );
 
     // storage.set(
-    //   "TOKEN",
-    //   // "Bearer 106842|4cIjhYCYF8ETEYeWNWkzhdBzTxpBjITi4Gi3vQ3wd0f7ec27"
+    //   "token",
+    //   "Bearer 157486|1D1Tuw7Ce9VRUMrZWN0Cyhb6mtfo5GdhZwnSw50826589ac0"
     // );
 
     // storage.set(
@@ -168,8 +171,44 @@ function App() {
     }
   };
 
+
+
+  // -----------------------------------------
+  // DashBoard Count
+  // -----------------------------------------
+
+  const getDashboardCount = async () => {
+
+    setLoading(true);
+
+    try {
+
+      const payload = {
+
+        slug: EVENT_SLUG,
+
+      };
+
+      const response = await getCountDashboard(payload);
+
+      if (response.success) {
+        setDashBoardCount(response.data);
+      }
+
+    } catch (error) {
+
+      showToast(error.response?.data?.message || "Something went wrong while checking in guest");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
   // Load guest list
   useEffect(() => {
+    getDashboardCount();
     getGuestList();
   }, []);
 
@@ -417,11 +456,6 @@ function App() {
     }
   };
 
-  // -----------------------------------------
-  // RENDER
-  // -----------------------------------------
-
-
   // SCANNING
   const handleScanSuccess = async (scannedString) => {
     try {
@@ -522,7 +556,9 @@ function App() {
         {activeTab === "dashboard" ? (
 
           <Dashboard
-            employees={employees}
+            dashBoardCount = {dashBoardCount}
+            onRefresh={() =>
+              getDashboardCount()}
           />
 
         ) : (

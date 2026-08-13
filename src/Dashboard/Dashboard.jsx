@@ -1,63 +1,65 @@
 import StatsCard from "../StatCard/StatsCard";
-import DepartmentCard from "../DepartmentCard/DepartmentCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faRotateRight
+} from "@fortawesome/free-solid-svg-icons";
+
+export default function Dashboard({ onRefresh, dashBoardCount }) {
 
 
-export default function Dashboard({ employees }) {
+    // const invited =
+    //     employees.filter(e => !e.isWalkin).length;
 
 
-    const invited =
-        employees.filter(e => !e.isWalkin).length;
+    // const checked =
+    //     employees.filter(e => e.checkin_time).length;
 
 
-    const checked =
-        employees.filter(e => e.checkin_time).length;
+    // const pending =
+    //     employees.filter(
+    //         e => !e.isWalkin && !e.checkin_time
+    //     ).length;
 
 
-    const pending =
-        employees.filter(
-            e => !e.isWalkin && !e.checkin_time
-        ).length;
+    // const walkins =
+    //     employees.filter(e => e.isWalkin).length;
 
 
-    const walkins =
-        employees.filter(e => e.isWalkin).length;
+    // const total = employees.length;
 
 
-    const total = employees.length;
-
-
-    const percentage =
-        total ? (checked / total) * 100 : 0;
+    // const percentage =
+    //     total ? (checked / total) * 100 : 0;
 
 
 
-    const departmentData = {};
+    // const departmentData = {};
 
 
-    employees.forEach(employee => {
+    // employees.forEach(employee => {
 
 
-        if (!departmentData[employee.dept]) {
+    //     if (!departmentData[employee.dept]) {
 
-            departmentData[employee.dept] = {
-                total: 0,
-                checked: 0
-            }
+    //         departmentData[employee.dept] = {
+    //             total: 0,
+    //             checked: 0
+    //         }
 
-        }
-
-
-        departmentData[employee.dept].total++;
+    //     }
 
 
-        if (employee.checkin_time) {
-
-            departmentData[employee.dept].checked++;
-
-        }
+    //     departmentData[employee.dept].total++;
 
 
-    });
+    //     if (employee.checkin_time) {
+
+    //         departmentData[employee.dept].checked++;
+
+    //     }
+
+
+    // });
 
     return (
 
@@ -68,38 +70,46 @@ export default function Dashboard({ employees }) {
                     Live
                 </span>
                 Retreat check-in overview
+                <button
+                    className="btn btn-ghost"
+                    onClick={onRefresh}
+                    title="Refresh"
+                >
+                <FontAwesomeIcon icon={faRotateRight} />
+                <span>Refresh</span>
+            </button>
             </div>
 
             <div className="stat-grid">
                 <StatsCard
-                    value={invited}
+                    value={dashBoardCount.invitation_count}
                     label="Invitations Sent"
                 />
 
                 <StatsCard
-                    value={checked}
+                    value={dashBoardCount.checked_in_count}
                     label="Checked In"
                     color="aqua"
                 />
 
                 <StatsCard
-                    value={pending}
+                    value={dashBoardCount.pending_count}
                     label="Awaiting Arrival"
                     color="amber"
                 />
 
-                <StatsCard
+                {/* <StatsCard
                     value={walkins}
                     label="Walk-in Guests"
                     color="coral"
-                />
+                /> */}
 
                 <StatsCard
-                    value={`${percentage.toFixed(0)}%`}
+                    value={dashBoardCount.invited_rate}
                     label="Invited check-in rate"
                 />
             </div>
-            <div className="capacity-card">
+            {/* <div className="capacity-card">
                 <div className="capacity-top">
                     <span className="t">
                         🌊 Resort arrivals vs. total roster
@@ -116,7 +126,7 @@ export default function Dashboard({ employees }) {
                         }}
                     />
                 </div>
-            </div>
+            </div> */}
         </section>
 
     )

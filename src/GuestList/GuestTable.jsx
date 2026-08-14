@@ -12,7 +12,8 @@ export default function GuestTable({
     onremindEmail,
     checkingInId,
     tableLoading,
-    emailSendingIDs = []
+    emailSendingIDs = [],
+    remindMailId
 }) {
 
     const goToPage = (page) => {
@@ -158,23 +159,23 @@ export default function GuestTable({
 
                                                     </button>
 
-                                                    <button
-                                                        type="button"
-                                                        className="remind-btn"
-                                                        onClick={() => onremindEmail(employee)}
-                                                        disabled={emailSendingIDs.includes(employee.id)}
+                                                    <button className="remind-btn"
+                                                    onClick={() =>
+                                                        onremindEmail(employee)
+                                                    }
+                                                    disabled={
+                                                        remindMailId?.some(id => String(id) === String(employee.user_id))
+                                                    }
                                                     >
-                                                        {emailSendingIDs.includes(employee.id) ? (
+                                                        {remindMailId?.some(id => String(id) === String(employee.user_id)) ? (
                                                             <>
                                                                 <span className="button-loader"></span>
-                                                                <span>Sending...</span>
+                                                                <span> Sending... </span>
                                                             </>
-                                                        ) : (
-                                                            "Remind"
-                                                        )}
+                                                        ) : ("Remind")}
                                                     </button>
-
                                                 </>
+                                                  
 
                                             )}
 

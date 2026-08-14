@@ -35,7 +35,7 @@ function App() {
   const [tableLoading, setTableLoading] = useState(false);
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [showImportRSVP, setShowImportRSVP] = useState(false);
-
+  const [remindMailId, setRemindMailId] = useState([]);
   const [pagination, setPagination] = useState({
     current_page: 1,
     per_page: 10,
@@ -183,7 +183,7 @@ function App() {
 
   const getDashboardCount = async () => {
 
-    setLoading(true);
+    setTableLoading(true);
 
     try {
 
@@ -205,7 +205,7 @@ function App() {
 
     } finally {
 
-      setLoading(false);
+      setTableLoading(false);
 
     }
 
@@ -364,11 +364,16 @@ function App() {
   // -----------------------------------------
 
   const remindEmail = async (employee = null) => {
-
     const payload = {
       event_slug: EVENT_SLUG,
       ...(employee != null && { user_id: employee.user_id })
     };
+    if(employee != null && employee.user_id){
+      setRemindMailId(prev => {
+        if (prev.includes(employee.user_id)) return prev; // Agar pehle se hai toh kuch mat karo
+        return [...prev, employee.user_id]; // Nayi hai toh add karo
+      });
+    }
     try {
 
       const response = await resendGuestCheckInEmail(payload);
@@ -377,16 +382,14 @@ function App() {
 
         showToast(
           response.message ||
-          "Guest checked in successfully"
+          "Mail sent successfully"
         );
-
-        await getGuestList();
 
       } else {
 
         showToast(
           response.message ||
-          "Unable to check in guest"
+          "Unable to send mail to guest"
         );
 
       }
@@ -394,19 +397,18 @@ function App() {
     } catch (error) {
 
       console.error(
-        "Quick check-in error:",
+        "Mail sending error:",
         error
       );
 
       showToast(
         error.response?.data?.message ||
-        "Something went wrong while checking in guest"
+        "Something went wrong while sending mail to guest"
       );
 
-    } finally {
-
-      setCheckingInId(null);
-
+    }
+    if(employee != null && employee.user_id){
+      setRemindMailId(prev => prev.filter(item => item != employee.user_id));
     }
 
   };
@@ -662,6 +664,7 @@ function App() {
             tableLoading={tableLoading}
 
             checkingInId={checkingInId}
+            remindMailId={remindMailId}
             onOpenScanner={() => setShowQRScanner(true)}
             onImportRSVP={openImportRSVPModal}
             onOpenConfirmationBox={() => setShowBulkReminderConfirm(true)}

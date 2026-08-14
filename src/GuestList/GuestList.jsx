@@ -25,7 +25,8 @@ export default function GuestList({
     onOpenScanner,
     onImportRSVP,
     showExportExcel,
-    onOpenConfirmationBox
+    onOpenConfirmationBox,
+    remindMailId
 }) {
 
     return (
@@ -68,6 +69,7 @@ export default function GuestList({
                 onImportRSVP={onImportRSVP}
                 showExportExcel={showExportExcel}
                 onOpenConfirmationBox={onOpenConfirmationBox}
+                remindMailId={remindMailId}
 
             />
 
@@ -87,6 +89,7 @@ export default function GuestList({
                 checkingInId={checkingInId}
                 tableLoading={tableLoading}
                 emailSendingIDs={emailSendingIDs}
+                remindMailId={remindMailId}
             />
 
 

@@ -69,7 +69,7 @@ function App() {
 
     // storage.set(
     //   "token",
-    //   "Bearer 106854|zouj4wGbBF1Iuftn0LehJgNpHV88VaPSHKXJxUfha5c009e6"
+    //   "157489|7SD1lz0LOb2LO8tq23iPlmYDk0azEhtgAwPjJVSmc3cd3c72"
     // );
 
     // storage.set(
@@ -120,7 +120,7 @@ function App() {
 
           checkin_time: guest.check_in_time,
 
-          isWalkin: false,
+          isWalkin: guest.walk_in,
 
           event_id: guest.event_id,
 
@@ -290,7 +290,9 @@ function App() {
 
         event_slug: EVENT_SLUG,
 
-        user_id: selectedUser.id
+        user_id: selectedUser.id,
+
+        walk_in: true
 
       };
 
@@ -727,7 +729,7 @@ function App() {
         onClose={() => setShowBulkReminderConfirm(false)}
         onConfirm={sendBulkReminder}
         title="Send Bulk Reminder"
-        message="Do you really want to send a bulk reminder to all participants?"
+        message="Do you really want to send a bulk reminder to all guests who have not checked in yet?"
         confirmText="Yes, Send Reminder"
         cancelText="Cancel"
         loading={loading}

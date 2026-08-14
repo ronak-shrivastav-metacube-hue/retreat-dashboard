@@ -1,8 +1,8 @@
 import axios from "axios";
 import { storage } from "../utils/storage";
 
-const TOKEN = "Bearer "+ storage.get("token");
-// const TOKEN =  storage.get("token"); // for local testing without Bearer prefix
+// const TOKEN = "Bearer "+ storage.get("token");
+const TOKEN =  storage.get("token"); // for local testing without Bearer prefix
 const BASE_URL = storage.get("BASE_URL");
 // Get guest list
 export const getCountDashboard = async ({
@@ -60,15 +60,20 @@ export const exportGuestsCSV = async ({
     status = ""
 }) => {
 
+    const params = {};
+
+    if (search) {
+        params.search = search;
+    }
+
+    if (status) {
+        params.status = status;
+    }
+    
     const response = await axios.get(
         `${BASE_URL}/event/export-guest-list/${slug}`,
         {
-            params: {
-                // page,
-                // per_page: perPage,
-                search,
-                status
-            },
+            params: params,
 
             headers: {
                 Authorization: TOKEN

@@ -17,8 +17,11 @@ import Dashboard from "./Dashboard/Dashboard";
 import GuestList from "./GuestList/GuestList";
 import WalkinModal from "./Modals/WalkinModal/WalkinModal";
 import Toast from "./Toast/Toast";
+
 import QRScanner from "./Modals/QRScanner/QRScanner";
 import ImportRSVPModal from "./Modals/ImportRSVPModal/ImportRSVPModal";
+import ExportExcelModal from "./Modals/ExportExcelModal/ExportExcelModal";
+import ConfirmModal from "./Modals/ConfirmModal/ConfirmModal";
 
 function App() {
 
@@ -45,6 +48,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
+  const [showExportExcel, setShowExportExcel] = useState(false);
+  const [showBulkReminderConfirm, setShowBulkReminderConfirm] = useState(false);
 
   // -----------------------------------------
   // API CONFIGURATION
@@ -52,7 +57,7 @@ function App() {
 
   // const EVENT_SLUG = "annual-retreat-26";
   const EVENT_SLUG = storage.get("event_slug") || "annual-retreat-26";
-  const EVENT_DESC = storage.get("event_desc") || "One Family, One Day. Endless Memories" 
+  const EVENT_DESC = storage.get("event_desc") || "One Family, One Day. Endless Memories"
 
   useEffect(() => {
 
@@ -64,7 +69,7 @@ function App() {
 
     // storage.set(
     //   "token",
-    //   "Bearer 157486|1D1Tuw7Ce9VRUMrZWN0Cyhb6mtfo5GdhZwnSw50826589ac0"
+    //   "Bearer 106854|zouj4wGbBF1Iuftn0LehJgNpHV88VaPSHKXJxUfha5c009e6"
     // );
 
     // storage.set(
@@ -162,7 +167,7 @@ function App() {
         );
       }
 
-      window.location.href = '/'; 
+      window.location.href = '/';
 
     } finally {
 
@@ -170,7 +175,6 @@ function App() {
 
     }
   };
-
 
 
   // -----------------------------------------
@@ -206,6 +210,7 @@ function App() {
     }
 
   };
+
   // Load guest list
   useEffect(() => {
     getDashboardCount();
@@ -407,18 +412,22 @@ function App() {
   };
 
   // -----------------------------------------
-  // Send Remind Mail
+  // Send Export Mail
   // -----------------------------------------
 
-  const exportCSV = async () => {
+  const exportCSV = async (exportType) => {
 
     const payload = {
       slug: EVENT_SLUG,
-      // page: page,
-      // perPage: 10,
-      search: search,
-      status: status
     };
+
+    if (exportType === "filters") {
+      payload.search = search;
+      payload.status = status;
+    }
+
+    setLoading(true);
+
     try {
 
       const response = await exportGuestsCSV(payload);
@@ -430,13 +439,15 @@ function App() {
           "Export sent to mail successfully"
         );
 
+        setShowExportExcel(false);
+
         await getGuestList();
 
       } else {
 
         showToast(
           response.message ||
-          "Unable to sent export mail"
+          "Unable to send export mail"
         );
 
       }
@@ -450,8 +461,12 @@ function App() {
 
       showToast(
         error.response?.data?.message ||
-        "Something went wrong while exporting in guest"
+        "Something went wrong while exporting guests"
       );
+
+    } finally {
+
+      setLoading(false);
 
     }
   };
@@ -539,24 +554,68 @@ function App() {
     }
   };
 
+  // -------------------
+  // Load bulk conformation pop up modal
+  // -----------------------
+  const sendBulkReminder = async () => {
 
+    setLoading(true);
 
+    try {
+
+      const payload = {
+        event_slug: EVENT_SLUG
+      };
+
+      const response = await resendGuestCheckInEmail(payload);
+
+      if (response.success) {
+
+        showToast(
+          response.message ||
+          "Bulk reminder sent successfully"
+        );
+
+      } else {
+
+        showToast(
+          response.message ||
+          "Unable to send bulk reminder"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Bulk reminder error:",
+        error
+      );
+
+      showToast(
+        error.response?.data?.message ||
+        "Something went wrong while sending bulk reminder"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+      setShowBulkReminderConfirm(false);
+    }
+  };
 
   return (
     <>
-
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
 
-
       <main>
-
         {activeTab === "dashboard" ? (
-
           <Dashboard
-            dashBoardCount = {dashBoardCount}
+            dashBoardCount={dashBoardCount}
             onRefresh={() =>
               getDashboardCount()}
           />
@@ -585,7 +644,7 @@ function App() {
 
             onremindEmail={remindEmail}
 
-            onExportCSV={exportCSV}
+            onExportCSV={() => setShowExportExcel(true)}
 
             openWalkinModal={() =>
               setShowWalkinModal(true)
@@ -605,11 +664,11 @@ function App() {
             checkingInId={checkingInId}
             onOpenScanner={() => setShowQRScanner(true)}
             onImportRSVP={openImportRSVPModal}
+            onOpenConfirmationBox={() => setShowBulkReminderConfirm(true)}
           />
         )}
 
       </main>
-
 
       <WalkinModal
 
@@ -653,6 +712,23 @@ function App() {
         }}
       />
 
+      <ExportExcelModal
+        open={showExportExcel}
+        onClose={() => setShowExportExcel(false)}
+        onExport={exportCSV}
+        loading={loading}
+      />
+
+      <ConfirmModal
+        open={showBulkReminderConfirm}
+        onClose={() => setShowBulkReminderConfirm(false)}
+        onConfirm={sendBulkReminder}
+        title="Send Bulk Reminder"
+        message="Do you really want to send a bulk reminder to all participants?"
+        confirmText="Yes, Send Reminder"
+        cancelText="Cancel"
+        loading={loading}
+      />
 
       {loading && (
 

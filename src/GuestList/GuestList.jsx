@@ -13,6 +13,7 @@ export default function GuestList({
     setCurrentPage,
     onCheckin,
     onremindEmail,
+    emailSendingIDs,
     openWalkinModal,
     onRefresh,
     loading,
@@ -22,7 +23,9 @@ export default function GuestList({
     onSearch,
     onExportCSV,
     onOpenScanner,
-    onImportRSVP
+    onImportRSVP,
+    showExportExcel,
+    onOpenConfirmationBox
 }) {
 
     return (
@@ -63,6 +66,8 @@ export default function GuestList({
                 onExportCSV = {onExportCSV}
                 onOpenScanner={onOpenScanner}
                 onImportRSVP={onImportRSVP}
+                showExportExcel={showExportExcel}
+                onOpenConfirmationBox={onOpenConfirmationBox}
 
             />
 
@@ -81,6 +86,7 @@ export default function GuestList({
                 onremindEmail={onremindEmail}
                 checkingInId={checkingInId}
                 tableLoading={tableLoading}
+                emailSendingIDs={emailSendingIDs}
             />
 
 

@@ -95,7 +95,10 @@ export default function WalkinModal({
         } finally {
 
             setCheckinLoading(false);
-
+            setUserDetail("");
+            setUsers([]);
+            setSelectedUser(null);
+            setSearchLoading(false);
         }
     };
 

@@ -1,0 +1,305 @@
+/* =========================================
+   Export Excel Modal
+========================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(2, 43, 74, 0.55);
+}
+
+/* Modal */
+.export-excel-modal {
+  width: 100%;
+  max-width: 420px;
+
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+
+  box-shadow: 0 18px 50px rgba(4, 56, 98, 0.22);
+
+  overflow: hidden;
+
+  animation: exportModalFadeIn 0.2s ease-out;
+}
+
+/* =========================================
+   Header
+========================================= */
+
+.export-excel-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.export-excel-modal .modal-header h3 {
+  margin: 0;
+
+  color: var(--deep-navy);
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+/* Close */
+.export-excel-modal .modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--ink-soft);
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.export-excel-modal .modal-close:hover {
+  background: var(--aqua-soft);
+  color: var(--lagoon-deep);
+}
+
+.export-excel-modal .modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   Body
+========================================= */
+
+.export-excel-modal .modal-body {
+  padding: 22px 20px;
+}
+
+/* =========================================
+   Radio Options
+========================================= */
+
+.export-excel-modal .radio-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 14px 16px;
+  margin-bottom: 12px;
+
+  border: 1px solid var(--line);
+  border-radius: 10px;
+
+  background: var(--card);
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.export-excel-modal .radio-option:last-child {
+  margin-bottom: 0;
+}
+
+.export-excel-modal .radio-option:hover {
+  border-color: var(--aqua);
+  background: var(--sand);
+}
+
+/* Selected option */
+.export-excel-modal .radio-option.selected {
+  border-color: var(--lagoon);
+
+  background: var(--aqua-soft);
+
+  box-shadow: 0 0 0 2px rgba(0, 119, 182, 0.08);
+}
+
+/* =========================================
+   Radio Input
+========================================= */
+
+.export-excel-modal .radio-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+
+  margin: 0;
+
+  accent-color: var(--lagoon);
+
+  cursor: pointer;
+}
+
+/* Text */
+.export-excel-modal .radio-option span {
+  color: var(--ink);
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.export-excel-modal .radio-option.selected span {
+  color: var(--lagoon-deep);
+}
+
+/* =========================================
+   Footer
+========================================= */
+
+.export-excel-modal .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 16px 20px;
+
+  border-top: 1px solid var(--line);
+
+  background: var(--sand);
+}
+
+/* =========================================
+   Footer Buttons
+========================================= */
+
+.export-excel-modal .modal-footer button {
+  min-width: 95px;
+
+  padding: 9px 17px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.export-excel-modal .modal-footer button:active {
+  transform: translateY(1px);
+}
+
+/* Cancel */
+.export-excel-modal .modal-footer button:first-child {
+  border: 1px solid var(--line);
+
+  background: var(--card);
+
+  color: var(--ink-soft);
+}
+
+.export-excel-modal .modal-footer button:first-child:hover {
+  border-color: var(--aqua);
+  background: var(--aqua-soft);
+  color: var(--lagoon-deep);
+}
+
+/* Export */
+.export-excel-modal .modal-footer button:last-child {
+  border: 1px solid var(--lagoon);
+
+  background: var(--lagoon);
+
+  color: #ffffff;
+}
+
+.export-excel-modal .modal-footer button:last-child:hover {
+  border-color: var(--lagoon-deep);
+  background: var(--lagoon-deep);
+}
+
+/* Disabled */
+.export-excel-modal .modal-footer button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   Animation
+========================================= */
+
+@keyframes exportModalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 16px;
+  }
+
+  .export-excel-modal {
+    max-width: 100%;
+  }
+
+  .export-excel-modal .modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .export-excel-modal .modal-footer button {
+    width: 100%;
+  }
+}
+.export-excel-modal .radio-option.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.export-excel-modal .radio-option.selected span {
+  color: #1d4ed8;
+}

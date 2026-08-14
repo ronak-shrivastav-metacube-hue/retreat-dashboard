@@ -11,7 +11,8 @@ import {
     faMagnifyingGlass,
     faEllipsisVertical,
     faFileImport,
-    faEnvelope
+    faEnvelope,
+    faMailBulk
 } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -28,7 +29,9 @@ export default function Toolbar({
     onExportCSV,
     onOpenScanner,
     onSearch,
-    onImportRSVP
+    onImportRSVP,
+    showExportExcel,
+    onOpenConfirmationBox
 }) {
 
     const [showMore, setShowMore] = useState(false);
@@ -134,19 +137,6 @@ export default function Toolbar({
                             <span>Import RSVP</span>
                         </button>
 
-
-                        <button
-                            className="more-menu-item"
-                            onClick={() => {
-                                onremindEmail();
-                                setShowMore(false);
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faEnvelope} />
-                            <span>Remind</span>
-                        </button>
-
-
                         <button
                             className="more-menu-item"
                             onClick={() => {
@@ -168,6 +158,11 @@ export default function Toolbar({
                         >
                             <FontAwesomeIcon icon={faPrint} />
                             <span>Print</span>
+                        </button>
+
+                        <button className="more-menu-item" onClick={() => onOpenConfirmationBox(true)}>
+                            <FontAwesomeIcon icon={faMailBulk} />
+                            Bulk Remind
                         </button>
 
                     </div>

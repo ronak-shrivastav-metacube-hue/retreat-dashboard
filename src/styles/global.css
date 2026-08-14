@@ -660,7 +660,7 @@ td.email {
 
 .remind-btn {
   background: none;
-  border: 1px solid var(--line);
+  border: 1px solid var(--ink-soft);
   color: var(--ink-soft);
   padding: 6px 10px;
   border-radius: 7px;

@@ -1,0 +1,270 @@
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(2, 43, 74, 0.55);
+}
+
+/* =========================================
+   Modal
+========================================= */
+
+.confirm-modal {
+  width: 100%;
+  max-width: 430px;
+
+  background: var(--card);
+
+  border: 1px solid var(--line);
+  border-radius: 14px;
+
+  box-shadow: 0 18px 50px rgba(4, 56, 98, 0.22);
+
+  overflow: hidden;
+
+  animation: confirmModalFadeIn 0.2s ease-out;
+}
+
+/* =========================================
+   Header
+========================================= */
+
+.confirm-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.confirm-modal-header h3 {
+  margin: 0;
+
+  color: var(--deep-navy);
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.confirm-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--ink-soft);
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.confirm-modal-close:hover {
+  background: var(--aqua-soft);
+  color: var(--lagoon-deep);
+}
+
+.confirm-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   Body
+========================================= */
+
+.confirm-modal-body {
+  padding: 24px 20px;
+}
+
+.confirm-modal-body p {
+  margin: 0;
+
+  color: var(--ink-soft);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* =========================================
+   Footer
+========================================= */
+
+.confirm-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 16px 20px;
+
+  border-top: 1px solid var(--line);
+
+  background: var(--sand);
+}
+
+/* =========================================
+   Buttons
+========================================= */
+
+.confirm-modal-footer button {
+  min-width: 90px;
+
+  padding: 9px 17px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.confirm-modal-footer button:active {
+  transform: translateY(1px);
+}
+
+.confirm-modal-footer button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Cancel */
+
+.confirm-modal-cancel {
+  border: 1px solid var(--line);
+
+  background: var(--card);
+
+  color: var(--ink-soft);
+}
+
+.confirm-modal-cancel:hover {
+  border-color: var(--aqua);
+
+  background: var(--aqua-soft);
+
+  color: var(--lagoon-deep);
+}
+
+/* =========================================
+   Confirm Variants
+========================================= */
+
+.confirm-modal-confirm {
+  border: 1px solid var(--lagoon);
+
+  background: var(--lagoon);
+
+  color: #ffffff;
+}
+
+.confirm-modal-confirm:hover {
+  border-color: var(--lagoon-deep);
+
+  background: var(--lagoon-deep);
+}
+
+/* Warning */
+
+.confirm-modal-confirm.warning {
+  border-color: var(--amber);
+
+  background: var(--amber);
+
+  color: var(--deep-navy);
+}
+
+.confirm-modal-confirm.warning:hover {
+  border-color: #d99124;
+
+  background: #d99124;
+}
+
+/* Danger */
+
+.confirm-modal-confirm.danger {
+  border-color: var(--coral);
+
+  background: var(--coral);
+
+  color: #ffffff;
+}
+
+.confirm-modal-confirm.danger:hover {
+  background: #e96f4c;
+
+  border-color: #e96f4c;
+}
+
+/* =========================================
+   Animation
+========================================= */
+
+@keyframes confirmModalFadeIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 480px) {
+
+  .confirm-modal-overlay {
+    padding: 16px;
+  }
+
+  .confirm-modal {
+    max-width: 100%;
+  }
+
+  .confirm-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .confirm-modal-footer button {
+    width: 100%;
+  }
+}

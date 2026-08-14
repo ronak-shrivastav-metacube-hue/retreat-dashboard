@@ -1,3 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faClock
+} from "@fortawesome/free-solid-svg-icons";
+
 export default function GuestTable({
     employees,
     pagination,
@@ -6,7 +11,8 @@ export default function GuestTable({
     onCheckin,
     onremindEmail,
     checkingInId,
-    tableLoading
+    tableLoading,
+    emailSendingIDs = []
 }) {
 
     const goToPage = (page) => {
@@ -41,6 +47,7 @@ export default function GuestTable({
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Check In</th>
                             <th>Action</th>
                         </tr>
 
@@ -66,19 +73,12 @@ export default function GuestTable({
 
                                 const formattedCheckin =
                                     checkinDate
-                                        ? `${String(
-                                            checkinDate.getDate()
-                                        ).padStart(2, "0")}-${String(
-                                            checkinDate.getMonth() + 1
-                                        ).padStart(2, "0")}-${checkinDate.getFullYear()} ${checkinDate.toLocaleTimeString(
-                                            [],
-                                            {
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                                second: "2-digit",
-                                                hour12: true
-                                            }
-                                        )}`
+                                        ? checkinDate.toLocaleTimeString([], {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            second: "2-digit",
+                                            hour12: true
+                                        })
                                         : "—";
 
 
@@ -96,6 +96,13 @@ export default function GuestTable({
 
                                         <td>
                                             {status}
+                                        </td>
+
+                                        <td>
+                                            <span className="stamped">
+                                                {formattedCheckin != "—" ? <FontAwesomeIcon icon={faClock} /> : ""}
+                                                {formattedCheckin}
+                                            </span>
                                         </td>
 
                                         <td>
@@ -123,10 +130,6 @@ export default function GuestTable({
                                                     <i>✓ undo </i>
                                                         )}
                                                 </button>
-
-                                                <span className="stamped">
-                                                    &nbsp;{formattedCheckin}
-                                                </span>
                                                 </>
 
                                             ) : (
@@ -155,12 +158,20 @@ export default function GuestTable({
 
                                                     </button>
 
-                                                    <button className="remind-btn"
-                                                    onClick={() =>
-                                                        onremindEmail(employee)
-                                                    }
+                                                    <button
+                                                        type="button"
+                                                        className="remind-btn"
+                                                        onClick={() => onremindEmail(employee)}
+                                                        disabled={emailSendingIDs.includes(employee.id)}
                                                     >
-                                                        Remind
+                                                        {emailSendingIDs.includes(employee.id) ? (
+                                                            <>
+                                                                <span className="button-loader"></span>
+                                                                <span>Sending...</span>
+                                                            </>
+                                                        ) : (
+                                                            "Remind"
+                                                        )}
                                                     </button>
 
                                                 </>

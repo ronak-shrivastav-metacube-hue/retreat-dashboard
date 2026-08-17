@@ -71,6 +71,7 @@ export default function Toolbar({
                 <option value="">All Statuses</option>
                 <option value="checked">Checked In</option>
                 <option value="pending">Pending</option>
+                <option value="walk In">Walk In</option>
             </select>
 
 

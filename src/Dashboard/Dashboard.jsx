@@ -98,11 +98,11 @@ export default function Dashboard({ onRefresh, dashBoardCount }) {
                     color="amber"
                 />
 
-                {/* <StatsCard
-                    value={walkins}
+                <StatsCard
+                    value={dashBoardCount.walk_in_count}
                     label="Walk-in Guests"
                     color="coral"
-                /> */}
+                />
 
                 <StatsCard
                     value={dashBoardCount.invited_rate}

@@ -150,10 +150,16 @@ export default function Toolbar({
 
 
                         <button
+                            type="button"
                             className="more-menu-item"
                             onClick={() => {
-                                printList(filteredEmployees);
                                 setShowMore(false);
+
+                                printList(
+                                    Array.isArray(filteredEmployees)
+                                        ? filteredEmployees
+                                        : []
+                                );
                             }}
                         >
                             <FontAwesomeIcon icon={faPrint} />

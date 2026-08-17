@@ -368,7 +368,7 @@ function App() {
       event_slug: EVENT_SLUG,
       ...(employee != null && { user_id: employee.user_id })
     };
-    if(employee != null && employee.user_id){
+    if (employee != null && employee.user_id) {
       setRemindMailId(prev => {
         if (prev.includes(employee.user_id)) return prev; // Agar pehle se hai toh kuch mat karo
         return [...prev, employee.user_id]; // Nayi hai toh add karo
@@ -407,7 +407,7 @@ function App() {
       );
 
     }
-    if(employee != null && employee.user_id){
+    if (employee != null && employee.user_id) {
       setRemindMailId(prev => prev.filter(item => item != employee.user_id));
     }
 

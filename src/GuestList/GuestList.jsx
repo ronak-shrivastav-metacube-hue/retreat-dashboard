@@ -71,6 +71,8 @@ export default function GuestList({
                 onOpenConfirmationBox={onOpenConfirmationBox}
                 remindMailId={remindMailId}
 
+                filteredEmployees={employees}
+
             />
 
 
